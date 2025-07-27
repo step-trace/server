@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/step-trace
+    username: postgres
+    password: postgres
+  data:
+    redis:
+      port: 6379
+      host: localhost
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+feign:
+  client:
+    kakao:
+      name: kakaoLogin
+      base-url: https://kauth.kakao.com
+      auth-url: https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=a911a9cd4ee96a1c1d463050751ed765&redirect_uri=http://localhost:8080/auth/kakao/callback
+      token-uri: /oauth/token
+      oicd-open-key-uri: /.well-known/jwks.json
+      rest-api-key: a911a9cd4ee96a1c1d463050751ed765
+      redirect-uri: http://localhost:8080/auth/kakao/callback
+      grant-type: authorization_code
+      oicd-base-url: https://kapi.kakao.com
+      oicd-userinfo-uri: /v1/oidc/userinfo
