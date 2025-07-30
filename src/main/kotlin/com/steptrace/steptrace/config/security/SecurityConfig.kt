@@ -26,12 +26,6 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        val swaggerPermitUrls = arrayOf(
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html"
-        )
-
         http.csrf { it.disable() }
                 .cors { it.disable() }
                 .httpBasic { it.disable() }
@@ -41,13 +35,9 @@ class SecurityConfig(
                 .with(CustomSecurityFilterManager(), Customizer.withDefaults())
                 .headers { headers -> headers.frameOptions { it.sameOrigin() } }
 
-        // todo: api 수정 필요
         http.authorizeHttpRequests {
-            it.requestMatchers("/library/reservation/**").hasRole("USER")
-                    .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers(*swaggerPermitUrls).permitAll()
-                    .requestMatchers("/library/seats").permitAll()
-                    .requestMatchers("/**").hasRole("USER")
+            it.requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
         }
 
         return http.build()

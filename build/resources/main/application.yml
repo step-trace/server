@@ -30,3 +30,14 @@ feign:
       grant-type: authorization_code
       oicd-base-url: https://kapi.kakao.com
       oicd-userinfo-uri: /v1/oidc/userinfo
+    google:
+      name: googleLogin
+      auth-url: https://accounts.google.com/o/oauth2/auth?client_id=441196104479-3kqc9h08p676gote5hq4truqiijfdfco.apps.googleusercontent.com&redirect_uri=http://localhost:8080/auth/google/callback&response_type=code&scope=openid+email+profile
+      token-url: https://oauth2.googleapis.com
+      userinfo-url: https://www.googleapis.com
+      client-id: 441196104479-3kqc9h08p676gote5hq4truqiijfdfco.apps.googleusercontent.com
+      client-secret: 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
+      redirect-uri: http://localhost:8080/auth/google/callback
+      grant-type: authorization_code
+      iss: https://accounts.google.com
+      oicd-open-key-url: https://www.googleapis.com

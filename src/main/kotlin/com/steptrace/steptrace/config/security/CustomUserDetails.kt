@@ -1,12 +1,12 @@
 package com.steptrace.steptrace.config.security
 
-import com.steptrace.steptrace.auth.userAccount.dto.UserAccount
+import com.steptrace.steptrace.auth.userAccount.dto.UserAccountEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class CustomUserDetails(
-        private val userAccount: UserAccount
+        private val userAccount: UserAccountEntity
 ) : UserDetails {
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
@@ -18,7 +18,7 @@ class CustomUserDetails(
     }
 
     override fun getUsername(): String {
-        return userAccount.profileNickname
+        return userAccount.profileNickname ?: userAccount.name!!
     }
 
     override fun isAccountNonExpired(): Boolean {

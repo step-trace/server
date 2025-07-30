@@ -1,36 +1,26 @@
 package com.steptrace.steptrace.auth.userAccount.dto
 
-import java.io.Serializable
-import java.time.LocalDateTime
+import com.steptrace.steptrace.auth.dto.UserInfoDto
 
 data class UserAccountDto(
-        val id: Long?,
-        val createdAt: LocalDateTime,
-        val createdBy: String?,
-        val updatedAt: LocalDateTime?,
-        val updatedBy: String?,
-        val profileNickname: String,
+        val profileNickname: String?,
+        val name: String?,
         val accountEmail: String?,
         val sub: String,
-        val memo: String?
-        ) : Serializable {
-            companion object {
-            fun of(profileNickname: String, sub: String): UserAccountDto {
-                return UserAccountDto(
-                        id = null,
-                        createdAt = LocalDateTime.now(),
-                        createdBy = null,
-                        updatedAt = LocalDateTime.now(),
-                        updatedBy = null,
-                        profileNickname = profileNickname,
-                        accountEmail = null,
-                        sub = sub,
-                        memo = null
-                )
-            }
+        val memo: String? = null
+) {
+    companion object {
+        fun from(dto: UserInfoDto): UserAccountDto {
+            return UserAccountDto(
+                    profileNickname = dto.nickname,
+                    name = dto.name,
+                    accountEmail = dto.email,
+                    sub = dto.sub
+            )
         }
+    }
 
-            fun toEntity(): UserAccount {
-        return UserAccount.from(this)
+    fun toEntity(): UserAccountEntity {
+        return UserAccountEntity.from(this)
     }
 }
