@@ -39,7 +39,7 @@ dependencies {
     implementation ("io.jsonwebtoken:jjwt-api:0.12.5")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     compileOnly("org.projectlombok:lombok")
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.5")
     runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.12.5")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
