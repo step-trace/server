@@ -3,6 +3,7 @@ package com.steptrace.steptrace.config.security
 import com.steptrace.steptrace.support.token.OauthOidcHelper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -36,8 +37,9 @@ class SecurityConfig(
                 .headers { headers -> headers.frameOptions { it.sameOrigin() } }
 
         http.authorizeHttpRequests {
-            it.requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
+            it.requestMatchers(HttpMethod.DELETE, "/auth/users").authenticated()
+                    .requestMatchers("/auth/**").permitAll()
+                    .anyRequest().authenticated()
         }
 
         return http.build()

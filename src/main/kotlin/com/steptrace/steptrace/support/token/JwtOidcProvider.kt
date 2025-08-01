@@ -42,7 +42,7 @@ class JwtOidcProvider {
                     .build()
                     .parseSignedClaims(token)
         } catch (e: ExpiredJwtException) {
-            throw IllegalArgumentException() // todo: 커스텀 예외로 변경
+            throw IllegalArgumentException("토큰 시간 만료") // todo: 커스텀 예외로 변경
         } catch (e: Exception) {
             logger.error(e.toString())
             throw IllegalArgumentException() // todo: 커스텀 예외로 변경

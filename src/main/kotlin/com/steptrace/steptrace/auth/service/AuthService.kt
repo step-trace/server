@@ -65,6 +65,10 @@ class AuthService(
         }
     }
 
+    fun deleteUserAccount(sub: String) {
+        userAccountRepository.deleteBySub(sub)
+    }
+
     private fun checkUserAccountExists(oidcDecodePayload: OidcDecodePayload): Boolean {
         return userAccountRepository.existsBySub(oidcDecodePayload.sub)
     }
