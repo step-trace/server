@@ -41,3 +41,10 @@ feign:
       grant-type: authorization_code
       iss: https://accounts.google.com
       oicd-open-key-url: https://www.googleapis.com
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    com.steptrace: DEBUG
+    root: INFO
