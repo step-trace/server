@@ -13,14 +13,14 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 class SecurityConfig(
-        private val oauthOidcHelper: OauthOidcHelper,
-        private val customUserDetailsService: CustomUserDetailsService
+        private val customUserDetailsService: CustomUserDetailsService,
+        private val jwtTokenProvider: JwtTokenProvider
 ) {
 
     inner class CustomSecurityFilterManager : AbstractHttpConfigurer<CustomSecurityFilterManager, HttpSecurity>() {
         override fun configure(builder: HttpSecurity) {
             val authenticationManager = builder.getSharedObject(AuthenticationManager::class.java)
-            builder.addFilter(JwtAuthenticationFilter(authenticationManager, oauthOidcHelper, customUserDetailsService))
+            builder.addFilter(JwtAuthenticationFilter(authenticationManager, customUserDetailsService, jwtTokenProvider))
             super.configure(builder)
         }
     }
@@ -38,7 +38,8 @@ class SecurityConfig(
 
         http.authorizeHttpRequests {
             it.requestMatchers(HttpMethod.DELETE, "/auth/users").authenticated()
-                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/auth/**").permitAll() // 테스트 후 삭제 예정
+                    .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .anyRequest().authenticated()
         }

@@ -42,6 +42,13 @@ feign:
       iss: https://accounts.google.com
       oicd-open-key-url: https://www.googleapis.com
 
+
+jwt:
+  secret: dGhpc0lzQVZlcnlTZWN1cmVBbmRMb25nSldUU2VjcmV0S2V5Rm9ySE1BQ0FsZ29yaXRobVRoYXRJczI1NkJpdHNPck1vcmVGb3JCZXR0ZXJTZWN1cml0eTIwMjQ=
+  issuer: step-trace
+  expiration: 604800000
+  prefix: Bearer
+
 logging:
   level:
     org.springframework.security: DEBUG
