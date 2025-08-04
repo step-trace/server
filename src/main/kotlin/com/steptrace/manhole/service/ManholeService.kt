@@ -21,4 +21,9 @@ class ManholeService(
 
         manholeRepository.saveManholeAttachments(manholeId, manholeDto.beforeImageUrls)
     }
+
+    @Transactional(readOnly = true)
+    fun getManholesFromMyReport(sub: String): List<ManholeDto> {
+        return manholeRepository.loadManholesWithAttachmentsBySub(sub)
+    }
 }

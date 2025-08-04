@@ -29,4 +29,13 @@ class ManholeClient(
     override fun saveManholeAttachments(manholeId: Long, imageUrls: List<String>) {
         imageUrls.forEach { imageUrl -> manholeAttachmentJpaRepository.save(toEntity(manholeId, imageUrl)) }
     }
+
+    override fun loadManholesWithAttachmentsBySub(sub: String): List<ManholeDto> {
+        val manholes = manholeJpaRepository.findAllByUserSub(sub)
+
+        return manholes.map { manhole ->
+            val attachments = manholeAttachmentJpaRepository.findAllByManholeId(manhole.id!!)
+            toDto(manhole, attachments)
+        }
+    }
 }
