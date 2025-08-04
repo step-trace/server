@@ -1,6 +1,7 @@
 package com.steptrace.manhole.controller
 
 import com.steptrace.config.security.CustomUserDetails
+import com.steptrace.manhole.dto.CompletedManholeResponse
 import com.steptrace.manhole.dto.ManholeRequest
 import com.steptrace.manhole.dto.ProcessingManholeResponse
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
@@ -18,9 +19,15 @@ class ManholeController(
     fun processingManhole(
             @PathVariable id: Long
     ) : ProcessingManholeResponse {
-        return ProcessingManholeResponse.from(manholeService.getProcessingManhole(id))
+        return ProcessingManholeResponse.from(manholeService.getManholeWithAttachment(id))
     }
 
+    @GetMapping("/v1/manholes/completed/{id}")
+    fun completedManhole(
+            @PathVariable id: Long
+    ) : CompletedManholeResponse {
+        return CompletedManholeResponse.from(manholeService.getManholeWithAttachment(id))
+    }
 
     @PostMapping("/v1/manholes")
     fun manholes(

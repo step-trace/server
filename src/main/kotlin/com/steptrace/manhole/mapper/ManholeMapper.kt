@@ -22,22 +22,25 @@ object ManholeMapper {
         )
     }
 
-    fun toDto(processingManhole: ManholeEntity, processingManholeAttachments: List<ManholeAttachmentEntity>) : ManholeDto {
+    fun toDto(manholeEntity: ManholeEntity, manholeAttachments: List<ManholeAttachmentEntity>) : ManholeDto {
         return ManholeDto(
-                id = processingManhole.id,
-                latitude = processingManhole.latitude,
-                longitude = processingManhole.longitude,
-                status = ProcessStatus.fromValue(processingManhole.status),
-                title = processingManhole.title,
-                place = processingManhole.place,
-                userDescription = processingManhole.userDescription,
-                userSub = processingManhole.userSub,
-                generatedDescription = processingManhole.generatedDescription,
-                beforeImageUrls = processingManholeAttachments.map { it.imageUrl },
-                createdBy = processingManhole.createdBy,
-                createdAt = processingManhole.createdAt,
-                updatedBy = processingManhole.updatedBy,
-                updatedAt = processingManhole.updatedAt
+                id = manholeEntity.id,
+                latitude = manholeEntity.latitude,
+                longitude = manholeEntity.longitude,
+                status = ProcessStatus.fromValue(manholeEntity.status),
+                title = manholeEntity.title,
+                place = manholeEntity.place,
+                userDescription = manholeEntity.userDescription,
+                userSub = manholeEntity.userSub,
+                generatedDescription = manholeEntity.generatedDescription,
+                beforeImageUrls = manholeAttachments.filterNot { it.isCompleted }.map { it.imageUrl },
+                afterImageUrls = manholeAttachments.filter { it.isCompleted }.map { it.imageUrl },
+                processAgency = manholeEntity.processAgency,
+                processDescription = manholeEntity.processDescription,
+                createdBy = manholeEntity.createdBy,
+                createdAt = manholeEntity.createdAt,
+                updatedBy = manholeEntity.updatedBy,
+                updatedAt = manholeEntity.updatedAt
         )
     }
 

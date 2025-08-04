@@ -8,5 +8,5 @@ interface ManholeRepository {
 
     fun saveManholeAttachments(manholeId: Long, attachments: List<String>)
 
-    fun loadProcessingManholeById(id: Long): ManholeDto
+    fun loadManholeWithAttachmentById(id: Long): ManholeDto
 }

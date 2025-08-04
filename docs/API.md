@@ -126,7 +126,7 @@
   "longitude": 126.978,
   "status": "처리 중",
   "place": "서울특별시 중구",
-  "image_urls": [
+  "before_image_urls": [
     "https://example.com/image1.jpg",
     "https://example.com/image2.jpg"
   ],
@@ -167,7 +167,7 @@
     "https://example.com/image5.jpg",
     "https://example.com/image6.jpg"
   ],
-  "description": [
+  "process_description": [
     "철제 맨홀 교체 완료하였음."
   ],
   "created_at": "2023-09-02T12:00:00Z"

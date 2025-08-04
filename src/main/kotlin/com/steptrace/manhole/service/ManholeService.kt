@@ -10,8 +10,8 @@ class ManholeService(
         private val manholeRepository: ManholeRepository
 ) {
     @Transactional(readOnly = true)
-    fun getProcessingManhole(id: Long) : ManholeDto {
-        return manholeRepository.loadProcessingManholeById(id)
+    fun getManholeWithAttachment(id: Long) : ManholeDto {
+        return manholeRepository.loadManholeWithAttachmentById(id)
     }
 
     @Transactional
