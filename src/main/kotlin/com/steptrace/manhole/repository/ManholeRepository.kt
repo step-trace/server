@@ -4,6 +4,8 @@ import com.steptrace.manhole.dto.ManholeDto
 import com.steptrace.manhole.dto.ManholeEntity
 
 interface ManholeRepository {
+    fun loadManholesWithAttachment(): List<ManholeDto>
+
     fun loadManholeWithAttachmentById(id: Long): ManholeDto
 
     fun saveManhole(manholeDto: ManholeDto): ManholeEntity

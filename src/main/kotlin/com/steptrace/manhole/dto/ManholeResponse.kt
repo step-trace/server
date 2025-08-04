@@ -2,6 +2,24 @@ package com.steptrace.manhole.dto
 
 import java.time.LocalDateTime
 
+data class ManholeMakerResponse(
+        val id: Long,
+        val latitude: Double,
+        val longitude: Double,
+        val status: String,
+) {
+    companion object {
+        fun from(dto: ManholeDto): ManholeMakerResponse = with(dto) {
+            ManholeMakerResponse(
+                    id = id!!,
+                    latitude = latitude,
+                    longitude = longitude,
+                    status = status.value
+            )
+        }
+    }
+}
+
 data class ProcessingManholeResponse(
         val id: Long,
         val latitude: Double,

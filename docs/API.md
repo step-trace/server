@@ -9,14 +9,14 @@
 
 - [x] 카카오 로그인
 - [x] 구글 로그인
-- [ ] 현 위치 주변 맨홀 표시
+- [x] 현 위치 주변 맨홀 표시
 - [x] 처리 중인 맨홀 조회
-- [ ] 처리 완료된 맨홀 조회
+- [x] 처리 완료된 맨홀 조회
 - [ ] 사진 업로드
 - [x] 맨홀 등록
-- [ ] 나의 제보 목록 조회
-- [ ] 나의 처리 중인 제보 상세 조회
-- [ ] 나의 처리 완료된 제보 상세 조회
+- [x] 나의 제보 목록 조회
+- [x] 나의 처리 중인 제보 상세 조회
+- [x] 나의 처리 완료된 제보 상세 조회
 - [x] 회원 탈퇴
 
 ## 카카오 로그인
@@ -81,11 +81,12 @@
 
 지도에서 현 위치 주변의 맨홀을 표시하기 위한 API입니다.
 
-### **GET** /api/v1/manholes?lat={latitude}&lng={longitude}&level={level}
+### **GET** /api/v1/manholes?swLat={swLat}&swLng={swLng}&neLat={neLat}&neLng={neLng}
 
-- latitude: 위도
-- longitude: 경도
-- level: 지도 레벨 (1~5)
+- swLat: 남서쪽 위도
+- swLng: 남서쪽 경도
+- neLat: 북동쪽 위도
+- neLng: 북동쪽 경도
 
 ### Response
 
@@ -121,14 +122,15 @@
 
 ```json
 {
-  "id": 1,
+  "id": 2,
   "latitude": 37.5665,
   "longitude": 126.978,
-  "status": "처리 중",
-  "place": "서울특별시 중구",
+  "status": "접수 전",
+  "place": "서울특별시 송파구 올림픽로 317",
   "before_image_urls": [
     "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg"
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg"
   ],
   "generated_description": [
     "위험도: 상",
@@ -136,7 +138,7 @@
     "마감재 마모로 인한 내구성 저하",
     "보행자 발목 위험 존재"
   ],
-  "created_at": "2023-09-01T12:00:00Z"
+  "created_at": "2025-08-01T23:25:15"
 }
 ```
 
@@ -146,7 +148,7 @@
 
 처리 완료된 맨홀의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/v1/manholes/completed/{id}h
+### **GET** /api/v1/manholes/completed/{id}
 
 - id: 맨홀 ID
 
@@ -267,7 +269,7 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 나의 제보 목록을 조회하기 위한 API입니다.
 
-### **GET** /api/my-reports/v1/manholes
+### **GET** /api/v1/manholes/my-reports
 
 ### Response
 
@@ -299,20 +301,19 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 ---
 
-// 접수 전 페이지도 필요할 것 같습니다.
-
 ## 나의 처리 중인 제보 상세 조회
 
 처리 중인 제보의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/my-reports/v1/manholes/processing/{id}
+### **GET** /api/v1/manholes/my-reports/processing/{id}
 
 - id: 제보 ID
 
 ### Response
 
+- user_description은 nullable합니다.
+
 ```json
-// ai_description 필드는 필요 없나? (기획)
 
 {
   "id": 1,
@@ -320,12 +321,30 @@ presigned URL을 받아 업로드를 위한 API입니다.
   "title": "뚜껑 흔들리는 맨홀 제보 요청",
   "created_at": "2023-09-01T12:00:00Z",
   "place": "서울특별시 중구",
-  "image_url": [
+  "before_image_url": [
     "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg"
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg",
   ],
   "user_description": "맨홀 뚜껑이 흔들려 보행 시 위험합니다. 조속한 처리 부탁드립니다."
 }
+```
+
+```json
+{
+    "id": 4,
+    "status": "접수 전",
+    "title": "맨홀맨홀맨홀.",
+    "created_at": "2025-08-04T16:37:42",
+    "place": "부산광역시 기장군 구연2로 27-5",
+    "before_image_urls": [
+        "https://example.com/image1.jpg",
+        "https://example.com/image2.jpg",
+        "https://example.com/image3.jpg"
+    ],
+    "user_description": null
+}
+
 ```
 
 ---
@@ -334,11 +353,13 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 처리 완료된 제보의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/my-reports/v1/manholes/completed/{id}
+### **GET** /api/api/v1/manholes/my-reports/completed/{id}
 
 - id: 제보 ID
 
 ### Response
+
+- user_description은 nullable합니다.
 
 ```json
 {

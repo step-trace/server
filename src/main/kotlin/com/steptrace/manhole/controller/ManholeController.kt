@@ -7,6 +7,7 @@ import com.steptrace.manhole.dto.ManholesFromMyReportResponse
 import com.steptrace.manhole.dto.ProcessingManholeResponse
 import com.steptrace.manhole.dto.ProcessingManholesFromMyReportResponse
 import com.steptrace.manhole.dto.CompletedManholesFromMyReportResponse
+import com.steptrace.manhole.dto.ManholeMakerResponse
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
 import com.steptrace.manhole.service.ManholeService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -18,6 +19,17 @@ class ManholeController(
         private val manholeService: ManholeService
 ) {
 
+    @GetMapping("/v1/manholes")
+    fun manholeMarkers(
+            @RequestParam swLat: Double,
+            @RequestParam swLng: Double,
+            @RequestParam neLat: Double,
+            @RequestParam neLng: Double
+    ) : List<ManholeMakerResponse> {
+        return manholeService.getManholeMarkers(swLat, swLng, neLat, neLng).map {
+            ManholeMakerResponse.from(it)
+        }
+    }
 
 
     @GetMapping("/v1/manholes/processing/{id}")

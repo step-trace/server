@@ -12,6 +12,15 @@ class ManholeClient(
         private val manholeAttachmentJpaRepository: ManholeAttachmentJpaRepository
 ) : ManholeRepository {
 
+    override fun loadManholesWithAttachment(): List<ManholeDto> {
+        val manholes = manholeJpaRepository.findAll()
+
+        return manholes.map { manhole ->
+            val attachments = manholeAttachmentJpaRepository.findAllByManholeId(manhole.id!!)
+            toDto(manhole, attachments)
+        }
+    }
+
     override fun loadManholeWithAttachmentById(id: Long): ManholeDto {
         val manholeEntity = manholeJpaRepository.findById(id).orElseThrow {
             IllegalArgumentException("Manhole with id $id not found") //todo: 커스텀 예외로 변경

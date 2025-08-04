@@ -9,8 +9,16 @@ import org.springframework.transaction.annotation.Transactional
 class ManholeService(
         private val manholeRepository: ManholeRepository
 ) {
+
     @Transactional(readOnly = true)
-    fun getManholeWithAttachment(id: Long) : ManholeDto {
+    fun getManholeMarkers(swlat: Double, swlng: Double, nelat: Double, nelng: Double): List<ManholeDto> {
+        return manholeRepository.loadManholesWithAttachment().filter { manhole ->
+            manhole.latitude in swlat..nelat && manhole.longitude in swlng..nelng
+        }
+    }
+
+    @Transactional(readOnly = true)
+    fun getManholeWithAttachment(id: Long): ManholeDto {
         return manholeRepository.loadManholeWithAttachmentById(id)
     }
 
