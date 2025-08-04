@@ -3,7 +3,10 @@ package com.steptrace.manhole.controller
 import com.steptrace.config.security.CustomUserDetails
 import com.steptrace.manhole.dto.CompletedManholeResponse
 import com.steptrace.manhole.dto.ManholeRequest
+import com.steptrace.manhole.dto.ManholesFromMyReportResponse
 import com.steptrace.manhole.dto.ProcessingManholeResponse
+import com.steptrace.manhole.dto.ProcessingManholesFromMyReportResponse
+import com.steptrace.manhole.dto.CompletedManholesFromMyReportResponse
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
 import com.steptrace.manhole.service.ManholeService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.*
 class ManholeController(
         private val manholeService: ManholeService
 ) {
+
+
 
     @GetMapping("/v1/manholes/processing/{id}")
     fun processingManhole(
@@ -35,5 +40,27 @@ class ManholeController(
             @AuthenticationPrincipal userAccount: CustomUserDetails
     ) {
         manholeService.create(toDto(manholeRequest, userAccount.password))
+    }
+
+    @GetMapping("/v1/manholes/my-reports")
+    fun myReportManholes(
+            @AuthenticationPrincipal userAccount: CustomUserDetails
+    ) : List<ManholesFromMyReportResponse> {
+        return manholeService.getManholesFromMyReport(userAccount.password)
+                .map { ManholesFromMyReportResponse.from(it) }
+    }
+
+    @GetMapping("/v1/manholes/my-reports/processing/{id}")
+    fun myReportProcessingManhole(
+            @PathVariable id: Long
+    ) : ProcessingManholesFromMyReportResponse {
+        return ProcessingManholesFromMyReportResponse.from(manholeService.getManholeWithAttachment(id))
+    }
+
+    @GetMapping("/v1/manholes/my-reports/completed/{id}")
+    fun myReportCompletedManhole(
+            @PathVariable id: Long
+    ) : CompletedManholesFromMyReportResponse {
+        return CompletedManholesFromMyReportResponse.from(manholeService.getManholeWithAttachment(id))
     }
 }
