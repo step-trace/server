@@ -1,9 +1,9 @@
 # 발자취 API 문서
 
-모든 API는 로그인 후 IdToken을 담아 실행해야 합니다.
+모든 API는 로그인 후 JWT를 담아 실행해야 합니다.
 
 - content-type: application/json
-- Authorization: Bearer {IdToken}
+- Authorization: Bearer {JWT}
 
 ## API 목차
 
@@ -42,7 +42,7 @@
 
 ```json
 {
-  "jwt_token": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTgxMzYyNjIyNTc1NjA1MDczOTkiLCJleHAiOjE3NTQyNzUwNTcsImVtYWlsIjoic2hnZ20yMDAwQGdtYWlsLmNvbSIsIm5hbWUiOiLquYDshLjtm4giLCJuaWNrbmFtZSI6bnVsbCwiaXNzIjoic3RlcC10cmFjZSJ9.JenLcjgz8iPxvVZrYxzDZ_PgRFfMvT3Y9k7cg_WBlKSDGrtnGILw5eXQ6WfLqSFOaCChTzd6e0zdZgbKamCB9w"
+  "jwt": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTgxMzYyNjIyNTc1NjA1MDczOTkiLCJleHAiOjE3NTQyNzUwNTcsImVtYWlsIjoic2hnZ20yMDAwQGdtYWlsLmNvbSIsIm5hbWUiOiLquYDshLjtm4giLCJuaWNrbmFtZSI6bnVsbCwiaXNzIjoic3RlcC10cmFjZSJ9.JenLcjgz8iPxvVZrYxzDZ_PgRFfMvT3Y9k7cg_WBlKSDGrtnGILw5eXQ6WfLqSFOaCChTzd6e0zdZgbKamCB9w"
 }
 ```
 
@@ -70,7 +70,7 @@
 
 ```json
 {
-  "jwt_token": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU0Mjc1MjQ1LCJlbWFpbCI6bnVsbCwibmFtZSI6bnVsbCwibmlja25hbWUiOiLquYDshLjtm4giLCJpc3MiOiJzdGVwLXRyYWNlIn0.EdVPWOG6eoarKxdkHIyhxjNHsFGSJgwhaFqx9AB40qdXMBbpc40XompcNkZO-Dfz_L5eTF5Oeqt8YgLPSfFaPg"
+  "jwt": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU0Mjc1MjQ1LCJlbWFpbCI6bnVsbCwibmFtZSI6bnVsbCwibmlja25hbWUiOiLquYDshLjtm4giLCJpc3MiOiJzdGVwLXRyYWNlIn0.EdVPWOG6eoarKxdkHIyhxjNHsFGSJgwhaFqx9AB40qdXMBbpc40XompcNkZO-Dfz_L5eTF5Oeqt8YgLPSfFaPg"
 }
 
 ```
