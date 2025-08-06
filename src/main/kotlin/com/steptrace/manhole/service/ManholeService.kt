@@ -1,5 +1,6 @@
 package com.steptrace.manhole.service
 
+import com.steptrace.exception.IdNotFoundException
 import com.steptrace.manhole.dto.ManholeDto
 import com.steptrace.manhole.repository.ManholeRepository
 import org.springframework.stereotype.Service
@@ -25,7 +26,7 @@ class ManholeService(
     @Transactional
     fun create(manholeDto: ManholeDto) {
         val manholeId = manholeRepository.saveManhole(manholeDto).id
-                ?: throw IllegalStateException("Failed to save manhole") //todo: 커스텀 예외로 변경
+                ?: throw IdNotFoundException("manhole")
 
         manholeRepository.saveManholeAttachments(manholeId, manholeDto.beforeImageUrls)
     }

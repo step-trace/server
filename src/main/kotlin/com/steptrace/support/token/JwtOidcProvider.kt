@@ -2,6 +2,8 @@ package com.steptrace.support.token
 
 import com.steptrace.auth.OidcDecodePayload
 import com.steptrace.auth.OidcPublicKeyDto
+import com.steptrace.exception.InvalidTokenException
+import com.steptrace.exception.TokenExpiredException
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jws
@@ -29,7 +31,7 @@ class JwtOidcProvider {
             val jsonObject = JSONObject(decodedHeader)
             jsonObject.get(kid).toString()
         } catch (e: JSONException) {
-            throw RuntimeException() // todo: 커스텀 예외로 변경
+            throw InvalidTokenException()
         }
     }
 
@@ -42,10 +44,10 @@ class JwtOidcProvider {
                     .build()
                     .parseSignedClaims(token)
         } catch (e: ExpiredJwtException) {
-            throw IllegalArgumentException("토큰 시간 만료") // todo: 커스텀 예외로 변경
+            throw TokenExpiredException()
         } catch (e: Exception) {
             logger.error(e.toString())
-            throw IllegalArgumentException() // todo: 커스텀 예외로 변경
+            throw InvalidTokenException()
         }
     }
 

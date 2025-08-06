@@ -1,5 +1,6 @@
 package com.steptrace.manhole.repository
 
+import com.steptrace.exception.IdNotFoundException
 import com.steptrace.manhole.dto.ManholeDto
 import com.steptrace.manhole.dto.ManholeEntity
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
@@ -23,7 +24,7 @@ class ManholeClient(
 
     override fun loadManholeWithAttachmentById(id: Long): ManholeDto {
         val manholeEntity = manholeJpaRepository.findById(id).orElseThrow {
-            IllegalArgumentException("Manhole with id $id not found") //todo: 커스텀 예외로 변경
+            IdNotFoundException("manhole")
         }
 
         val manholeAttachments = manholeAttachmentJpaRepository.findAllByManholeId(id)
