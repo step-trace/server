@@ -184,3 +184,6 @@ gradlew.bat
 # Application properties (if containing sensitive data)
 # application-*.yml
 # application-*.properties
+
+# PostgreSQL data directory
+postgres-data/
