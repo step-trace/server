@@ -2,6 +2,7 @@ package com.steptrace.config.security
 
 import org.springframework.security.core.userdetails.UserDetailsService
 import com.steptrace.auth.userAccount.repository.UserAccountRepository
+import com.steptrace.exception.UserNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
@@ -11,7 +12,7 @@ class CustomUserDetailsService(
 
     override fun loadUserByUsername(sub: String): CustomUserDetails {
         val user = userAccountRepository.findBySub(sub)
-                ?: throw IllegalArgumentException() //todo: 커스텀 예외 처리 필요
+                ?: throw UserNotFoundException()
         return CustomUserDetails(user)
     }
 }
