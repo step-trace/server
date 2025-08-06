@@ -12,7 +12,7 @@
 - [x] 현 위치 주변 맨홀 표시
 - [x] 처리 중인 맨홀 조회
 - [x] 처리 완료된 맨홀 조회
-- [ ] 사진 업로드
+- [x] 사진 업로드
 - [x] 맨홀 등록
 - [x] 나의 제보 목록 조회
 - [x] 나의 처리 중인 제보 상세 조회
@@ -42,7 +42,7 @@
 
 ```json
 {
-"jwt_token": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTgxMzYyNjIyNTc1NjA1MDczOTkiLCJleHAiOjE3NTQyNzUwNTcsImVtYWlsIjoic2hnZ20yMDAwQGdtYWlsLmNvbSIsIm5hbWUiOiLquYDshLjtm4giLCJuaWNrbmFtZSI6bnVsbCwiaXNzIjoic3RlcC10cmFjZSJ9.JenLcjgz8iPxvVZrYxzDZ_PgRFfMvT3Y9k7cg_WBlKSDGrtnGILw5eXQ6WfLqSFOaCChTzd6e0zdZgbKamCB9w"
+  "jwt_token": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMTgxMzYyNjIyNTc1NjA1MDczOTkiLCJleHAiOjE3NTQyNzUwNTcsImVtYWlsIjoic2hnZ20yMDAwQGdtYWlsLmNvbSIsIm5hbWUiOiLquYDshLjtm4giLCJuaWNrbmFtZSI6bnVsbCwiaXNzIjoic3RlcC10cmFjZSJ9.JenLcjgz8iPxvVZrYxzDZ_PgRFfMvT3Y9k7cg_WBlKSDGrtnGILw5eXQ6WfLqSFOaCChTzd6e0zdZgbKamCB9w"
 }
 ```
 
@@ -70,7 +70,7 @@
 
 ```json
 {
-    "jwt_token": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU0Mjc1MjQ1LCJlbWFpbCI6bnVsbCwibmFtZSI6bnVsbCwibmlja25hbWUiOiLquYDshLjtm4giLCJpc3MiOiJzdGVwLXRyYWNlIn0.EdVPWOG6eoarKxdkHIyhxjNHsFGSJgwhaFqx9AB40qdXMBbpc40XompcNkZO-Dfz_L5eTF5Oeqt8YgLPSfFaPg"
+  "jwt_token": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU0Mjc1MjQ1LCJlbWFpbCI6bnVsbCwibmFtZSI6bnVsbCwibmlja25hbWUiOiLquYDshLjtm4giLCJpc3MiOiJzdGVwLXRyYWNlIn0.EdVPWOG6eoarKxdkHIyhxjNHsFGSJgwhaFqx9AB40qdXMBbpc40XompcNkZO-Dfz_L5eTF5Oeqt8YgLPSfFaPg"
 }
 
 ```
@@ -182,7 +182,13 @@
 
 presigned URL을 받아 업로드를 위한 API입니다.
 
-### **POST** /api/v1/manholes/images
+### 고려 사항
+- 해당 presigned URL을 사용하여 클라이언트에서 직접 S3에 이미지를 업로드합니다.
+- 업로드 시 PUT 요청을 사용하며 요청 헤더에 Authorization을 제거하고 Content-Type을 포함해야 합니다.
+- 해당 Content-Type은 요청 본문에서 지정한 이미지의 MIME 타입과 일치해야 합니다.
+- 업로드한 사진에 접근할 때는 쿼리 파라미터를 제외한 URL을 사용하면 됩니다.
+
+### **POST** /api/images/v1/manholes
 
 ### Request Body
 
@@ -231,6 +237,8 @@ presigned URL을 받아 업로드를 위한 API입니다.
 ### **POST** /api/v1/manholes
 
 ### Request Body
+
+- image_url은 사진 업로드 API를 통해 받은 presigned URL에서 query param을 제외한 url입니다.
 
 ```json
 {
@@ -324,7 +332,7 @@ presigned URL을 받아 업로드를 위한 API입니다.
   "before_image_url": [
     "https://example.com/image1.jpg",
     "https://example.com/image2.jpg",
-    "https://example.com/image3.jpg",
+    "https://example.com/image3.jpg"
   ],
   "user_description": "맨홀 뚜껑이 흔들려 보행 시 위험합니다. 조속한 처리 부탁드립니다."
 }
@@ -332,17 +340,17 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 ```json
 {
-    "id": 4,
-    "status": "접수 전",
-    "title": "맨홀맨홀맨홀.",
-    "created_at": "2025-08-04T16:37:42",
-    "place": "부산광역시 기장군 구연2로 27-5",
-    "before_image_urls": [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-        "https://example.com/image3.jpg"
-    ],
-    "user_description": null
+  "id": 4,
+  "status": "접수 전",
+  "title": "맨홀맨홀맨홀.",
+  "created_at": "2025-08-04T16:37:42",
+  "place": "부산광역시 기장군 구연2로 27-5",
+  "before_image_urls": [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg"
+  ],
+  "user_description": null
 }
 
 ```

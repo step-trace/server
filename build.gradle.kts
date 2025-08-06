@@ -39,6 +39,7 @@ dependencies {
     implementation ("io.jsonwebtoken:jjwt-api:0.12.5")
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation ("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.5")

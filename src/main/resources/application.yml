@@ -42,7 +42,6 @@ feign:
       iss: https://accounts.google.com
       oicd-open-key-url: https://www.googleapis.com
 
-
 jwt:
   secret: dGhpc0lzQVZlcnlTZWN1cmVBbmRMb25nSldUU2VjcmV0S2V5Rm9ySE1BQ0FsZ29yaXRobVRoYXRJczI1NkJpdHNPck1vcmVGb3JCZXR0ZXJTZWN1cml0eTIwMjQ=
   issuer: step-trace
@@ -55,3 +54,13 @@ logging:
     org.springframework.web: DEBUG
     com.steptrace: DEBUG
     root: INFO
+
+cloud:
+  aws:
+    s3:
+      bucket: step-trace
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      access-key: AKIAVBQDJ37FF33RZPNF
+      secret-key: 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
