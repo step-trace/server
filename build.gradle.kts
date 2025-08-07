@@ -45,6 +45,7 @@ dependencies {
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.5")
     runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.12.5")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    testImplementation("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

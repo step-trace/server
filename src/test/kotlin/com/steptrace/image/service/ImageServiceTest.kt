@@ -1,9 +1,9 @@
-package com.step.steptrace.image.service
+package com.steptrace.image.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
-import com.step.steptrace.image.stub.ImageStub
-import com.step.steptrace.annotation.UnitTest
+import com.steptrace.image.stub.ImageStub
+import com.steptrace.annotation.UnitTest
 import com.steptrace.config.AwsProperties
 import com.steptrace.image.service.ImageService
 import io.mockk.every

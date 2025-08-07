@@ -1,4 +1,4 @@
-package com.step.steptrace.image.stub
+package com.steptrace.image.stub
 
 import com.steptrace.image.dto.ImageS3UploadRequest
 import com.steptrace.image.dto.ImageS3UploadResponse

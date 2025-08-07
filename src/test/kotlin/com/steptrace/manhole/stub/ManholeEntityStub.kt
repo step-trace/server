@@ -1,4 +1,4 @@
-package com.step.steptrace.manhole.stub
+package com.steptrace.manhole.stub
 
 import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeEntity

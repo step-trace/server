@@ -1,15 +1,15 @@
-package com.step.steptrace.manhole.repository
+package com.steptrace.manhole.repository
 
-import com.step.steptrace.manhole.stub.ManholeAttachmentEntityStub.BEFORE_IMAGE_ATTACHMENT
-import com.step.steptrace.manhole.stub.ManholeAttachmentEntityStub.MIXED_ATTACHMENTS
-import com.step.steptrace.manhole.stub.ManholeAttachmentEntityStub.MULTIPLE_BEFORE_ATTACHMENTS
-import com.step.steptrace.manhole.stub.ManholeAttachmentEntityStub.ONLY_AFTER_ATTACHMENTS
-import com.step.steptrace.manhole.stub.ManholeDtoStub.DEFAULT_MANHOLE
-import com.step.steptrace.manhole.stub.ManholeEntityStub
-import com.step.steptrace.manhole.stub.ManholeEntityStub.DEFAULT_MANHOLE_ENTITY
-import com.step.steptrace.manhole.stub.ManholeEntityStub.MANHOLE_ENTITY_ID_300
-import com.step.steptrace.manhole.stub.ManholeEntityStub.SAVED_MANHOLE_ENTITY
-import com.step.steptrace.annotation.UnitTest
+import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.BEFORE_IMAGE_ATTACHMENT
+import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.MIXED_ATTACHMENTS
+import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.MULTIPLE_BEFORE_ATTACHMENTS
+import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.ONLY_AFTER_ATTACHMENTS
+import com.steptrace.manhole.stub.ManholeDtoStub.DEFAULT_MANHOLE
+import com.steptrace.manhole.stub.ManholeEntityStub
+import com.steptrace.manhole.stub.ManholeEntityStub.DEFAULT_MANHOLE_ENTITY
+import com.steptrace.manhole.stub.ManholeEntityStub.MANHOLE_ENTITY_ID_300
+import com.steptrace.manhole.stub.ManholeEntityStub.SAVED_MANHOLE_ENTITY
+import com.steptrace.annotation.UnitTest
 import com.steptrace.exception.IdNotFoundException
 import com.steptrace.manhole.repository.ManholeAttachmentJpaRepository
 import com.steptrace.manhole.repository.ManholeClient

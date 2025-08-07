@@ -1,7 +1,7 @@
-package com.step.steptrace.manhole.dto
+package com.steptrace.manhole.dto
 
-import com.step.steptrace.manhole.stub.ManholeDtoStub
-import com.step.steptrace.annotation.UnitTest
+import com.steptrace.manhole.stub.ManholeDtoStub
+import com.steptrace.annotation.UnitTest
 import com.steptrace.manhole.dto.ManholesFromMyReportResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
