@@ -33,7 +33,6 @@ class ImageServiceTest {
     @MockK
     private lateinit var awsProperties: AwsProperties
 
-
     @BeforeEach
     fun setUp() {
         every { awsProperties.s3.bucket } returns "test-bucket"
@@ -59,12 +58,6 @@ class ImageServiceTest {
     @Test
     @DisplayName("여러 이미지에 대한 presigned URL들을 생성한다")
     fun should_generate_presigned_urls_for_multiple_images_successfully() {
-        val requests = listOf(
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "image1.jpg", contentType = "image/jpeg"),
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "image2.png", contentType = "image/png"),
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "image3.webp", contentType = "image/webp")
-        )
-
         val mockUrl1 = mockk<URL>()
         val mockUrl2 = mockk<URL>()
         val mockUrl3 = mockk<URL>()
@@ -75,7 +68,7 @@ class ImageServiceTest {
 
         every { amazonS3.generatePresignedUrl(any()) } returnsMany listOf(mockUrl1, mockUrl2, mockUrl3)
 
-        val result = imageService.getPresignedUrls(requests)
+        val result = imageService.getPresignedUrls(ImageStub.MULTIPLE_UPLOAD_REQUESTS)
 
         assertThat(result).hasSize(3)
         assertThat(result[0].fileName).isEqualTo("image1.jpg")
@@ -122,20 +115,13 @@ class ImageServiceTest {
     @Test
     @DisplayName("다양한 파일 확장자에 대해 올바르게 처리한다")
     fun should_handle_various_file_extensions_correctly() {
-        val requests = listOf(
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "profile.jpeg", contentType = "image/jpeg"),
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "banner.PNG", contentType = "image/png"),
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "logo.gif", contentType = "image/gif"),
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "photo.WEBP", contentType = "image/webp")
-        )
-
         val mockUrl = mockk<URL>()
         val slot = mutableListOf<GeneratePresignedUrlRequest>()
 
         every { mockUrl.toString() } returns "https://test-url.com"
         every { amazonS3.generatePresignedUrl(capture(slot)) } returns mockUrl
 
-        val result = imageService.getPresignedUrls(requests)
+        val result = imageService.getPresignedUrls(ImageStub.VARIOUS_EXTENSIONS_REQUESTS)
 
         assertThat(result).hasSize(4)
         assertThat(slot[0].key).contains("profile.jpeg")
@@ -154,18 +140,13 @@ class ImageServiceTest {
     @Test
     @DisplayName("특수 문자가 포함된 파일명도 올바르게 처리한다")
     fun should_handle_special_characters_in_filename_correctly() {
-        val specialCharRequest = ImageStub.DEFAULT_UPLOAD_REQUEST.copy(
-            fileName = "test image (1).jpg",
-            contentType = "image/jpeg"
-        )
-
         val mockUrl = mockk<URL>()
         val slot = slot<GeneratePresignedUrlRequest>()
 
         every { mockUrl.toString() } returns "https://test-url.com"
         every { amazonS3.generatePresignedUrl(capture(slot)) } returns mockUrl
 
-        val result = imageService.getPresignedUrls(listOf(specialCharRequest))
+        val result = imageService.getPresignedUrls(listOf(ImageStub.SPECIAL_CHAR_UPLOAD_REQUEST))
 
         assertThat(result).hasSize(1)
         assertThat(result[0].fileName).isEqualTo("test image (1).jpg")
@@ -177,17 +158,13 @@ class ImageServiceTest {
     @Test
     @DisplayName("각 요청마다 고유한 UUID가 생성된다")
     fun should_generate_unique_uuid_for_each_request() {
-        val requests = listOf(
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "same-name.jpg"),
-            ImageStub.DEFAULT_UPLOAD_REQUEST.copy(fileName = "same-name.jpg")
-        )
         val mockUrl = mockk<URL>()
         val slot = mutableListOf<GeneratePresignedUrlRequest>()
 
         every { mockUrl.toString() } returns "https://test-url.com"
         every { amazonS3.generatePresignedUrl(capture(slot)) } returns mockUrl
 
-        imageService.getPresignedUrls(requests)
+        imageService.getPresignedUrls(ImageStub.SAME_NAME_UPLOAD_REQUESTS)
 
         val firstKey = slot[0].key
         val secondKey = slot[1].key
