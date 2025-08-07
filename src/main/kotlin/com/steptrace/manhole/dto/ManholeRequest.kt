@@ -8,4 +8,9 @@ data class ManholeRequest(
         val title: String,
         val userDescription: String?,
         val generatedDescription: List<String>
-)
+) {
+    init {
+        require(imageUrls.isNotEmpty()) { "Image URL은 빈 값일 수 없습니다." }
+        require(generatedDescription.isNotEmpty()) { "Generated description은 빈 값일 수 없습니다." }
+    }
+}
