@@ -1,4 +1,4 @@
-package com.steptrace.common.annotation
+package com.step.steptrace.annotation
 
 import org.junit.jupiter.api.Tag
 

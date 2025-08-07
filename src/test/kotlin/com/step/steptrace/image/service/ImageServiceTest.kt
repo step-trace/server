@@ -3,7 +3,7 @@ package com.step.steptrace.image.service
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.step.steptrace.image.stub.ImageStub
-import com.steptrace.common.annotation.UnitTest
+import com.step.steptrace.annotation.UnitTest
 import com.steptrace.config.AwsProperties
 import com.steptrace.image.service.ImageService
 import io.mockk.every
@@ -33,13 +33,10 @@ class ImageServiceTest {
     @MockK
     private lateinit var awsProperties: AwsProperties
 
-    @MockK
-    private lateinit var s3Properties: AwsProperties.S3
 
     @BeforeEach
     fun setUp() {
-        every { awsProperties.s3 } returns s3Properties
-        every { s3Properties.bucket } returns "test-bucket"
+        every { awsProperties.s3.bucket } returns "test-bucket"
     }
 
     @Test

@@ -7,7 +7,7 @@ import com.step.steptrace.manhole.stub.ManholeDtoStub.IN_BOUNDS_MANHOLE
 import com.step.steptrace.manhole.stub.ManholeDtoStub.OUT_OF_BOUNDS_MANHOLE
 import com.step.steptrace.manhole.stub.ManholeEntityStub.MANHOLE_ENTITY_WITH_NULL_ID
 import com.step.steptrace.manhole.stub.ManholeEntityStub.SAVED_MANHOLE_ENTITY
-import com.steptrace.common.annotation.UnitTest
+import com.step.steptrace.annotation.UnitTest
 import com.steptrace.exception.IdNotFoundException
 import com.steptrace.manhole.repository.ManholeRepository
 import com.steptrace.manhole.service.ManholeService

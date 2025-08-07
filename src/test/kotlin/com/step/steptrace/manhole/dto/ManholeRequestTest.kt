@@ -1,6 +1,6 @@
 package com.step.steptrace.manhole.dto
 
-import com.steptrace.common.annotation.UnitTest
+import com.step.steptrace.annotation.UnitTest
 import com.steptrace.manhole.dto.ManholeRequest
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
