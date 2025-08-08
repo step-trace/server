@@ -54,6 +54,7 @@ class SecurityConfig(
 
         http.authorizeHttpRequests {
             it.requestMatchers(HttpMethod.DELETE, "/api/auth/users").authenticated()
+                    .requestMatchers("/auth/**").permitAll() // 테스트 후 삭제 예정
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .anyRequest().authenticated()
