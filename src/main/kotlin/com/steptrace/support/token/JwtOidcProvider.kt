@@ -9,7 +9,7 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import org.slf4j.LoggerFactory
-import org.springframework.boot.configurationprocessor.json.JSONObject
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 import java.security.KeyFactory
@@ -20,18 +20,15 @@ import java.util.Base64
 @Component
 class JwtOidcProvider {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val objectMapper = ObjectMapper()
 
     fun getKidFromTokenHeader(token: String): String {
         val kid = "kid"
         val encodedHeader = getEncodedHeader(token)
         val decodedHeader = getDecodedHeader(encodedHeader)
 
-        return try {
-            val jsonObject = JSONObject(decodedHeader)
-            jsonObject.get(kid).toString()
-        } catch (e: Exception) {
-            throw InvalidTokenException()
-        }
+        val headerMap = objectMapper.readValue(decodedHeader, Map::class.java)
+        return headerMap[kid]?.toString() ?: throw InvalidTokenException()
     }
 
     fun getOIDCTokenJws(token: String, oidcPublicKeyDto: OidcPublicKeyDto, iss: String, aud: String): Jws<Claims> {
