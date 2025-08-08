@@ -1,17 +1,17 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/step-trace
-    username: mysql
-    password: mysql
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   data:
     redis:
-      port: 6379
-      host: localhost
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
@@ -22,31 +22,31 @@ feign:
     kakao:
       name: kakaoLogin
       base-url: https://kauth.kakao.com
-      auth-url: https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=a911a9cd4ee96a1c1d463050751ed765&redirect_uri=http://localhost:8080/auth/kakao/callback
+      auth-url: https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}
       token-uri: /oauth/token
       oicd-open-key-uri: /.well-known/jwks.json
-      rest-api-key: a911a9cd4ee96a1c1d463050751ed765
-      redirect-uri: http://localhost:8080/auth/kakao/callback
+      rest-api-key: ${KAKAO_REST_API_KEY}
+      redirect-uri: ${KAKAO_REDIRECT_URI}
       grant-type: authorization_code
       oicd-base-url: https://kapi.kakao.com
       oicd-userinfo-uri: /v1/oidc/userinfo
     google:
       name: googleLogin
-      auth-url: https://accounts.google.com/o/oauth2/auth?client_id=441196104479-3kqc9h08p676gote5hq4truqiijfdfco.apps.googleusercontent.com&redirect_uri=http://localhost:8080/auth/google/callback&response_type=code&scope=openid+email+profile
+      auth-url: https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=openid+email+profile
       token-url: https://oauth2.googleapis.com
       userinfo-url: https://www.googleapis.com
-      client-id: 441196104479-3kqc9h08p676gote5hq4truqiijfdfco.apps.googleusercontent.com
-      client-secret: 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
-      redirect-uri: http://localhost:8080/auth/google/callback
+      client-id: ${GOOGLE_CLIENT_ID}
+      client-secret: ${GOOGLE_CLIENT_SECRET}
+      redirect-uri: ${GOOGLE_REDIRECT_URI}
       grant-type: authorization_code
       iss: https://accounts.google.com
       oicd-open-key-url: https://www.googleapis.com
 
 jwt:
-  secret: dGhpc0lzQVZlcnlTZWN1cmVBbmRMb25nSldUU2VjcmV0S2V5Rm9ySE1BQ0FsZ29yaXRobVRoYXRJczI1NkJpdHNPck1vcmVGb3JCZXR0ZXJTZWN1cml0eTIwMjQ=
-  issuer: step-trace
-  expiration: 604800000
-  prefix: Bearer
+  secret: ${JWT_SECRET}
+  issuer: ${JWT_ISSUER}
+  expiration: ${JWT_EXPIRATION}
+  prefix: ${JWT_PREFIX}
 
 logging:
   level:
@@ -58,9 +58,9 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: step-trace
+      bucket: ${AWS_S3_BUCKET}
     stack.auto: false
-    region.static: ap-northeast-2
+    region.static: ${AWS_REGION}
     credentials:
-      access-key: AKIAVBQDJ37FF33RZPNF
-      secret-key: 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
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
