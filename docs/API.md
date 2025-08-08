@@ -396,5 +396,5 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 회원 탈퇴를 위한 API입니다.
 
-### **DELETE** /api/auth/v1/delete
+### **DELETE** /api/auth/users
 
