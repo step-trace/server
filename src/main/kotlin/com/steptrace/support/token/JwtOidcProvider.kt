@@ -9,7 +9,6 @@ import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import org.slf4j.LoggerFactory
-import org.springframework.boot.configurationprocessor.json.JSONException
 import org.springframework.boot.configurationprocessor.json.JSONObject
 import org.springframework.stereotype.Component
 import java.math.BigInteger
@@ -30,7 +29,7 @@ class JwtOidcProvider {
         return try {
             val jsonObject = JSONObject(decodedHeader)
             jsonObject.get(kid).toString()
-        } catch (e: JSONException) {
+        } catch (e: Exception) {
             throw InvalidTokenException()
         }
     }
