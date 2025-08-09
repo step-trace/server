@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam
         url = "\${feign.client.kakao.base-url}"
 )
 interface KakaoOauthClient {
+    @Deprecated("테스트 후 삭제 예정")
     @PostMapping("\${feign.client.kakao.token-uri}")
     fun getKakaoToken(
             @RequestParam("client_id") restApiKey: String,

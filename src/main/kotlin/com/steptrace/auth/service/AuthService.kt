@@ -1,6 +1,7 @@
 package com.steptrace.auth.service
 
 import com.steptrace.auth.OidcDecodePayload
+import com.steptrace.auth.dto.TokenDto
 import com.steptrace.auth.dto.TokenResponse
 import com.steptrace.auth.dto.UserInfoDto
 import com.steptrace.auth.dto.google.GoogleTokenDto
@@ -53,9 +54,9 @@ class AuthService(
         )
     }
 
-    fun isKakaoUserRegistered(kakaoTokenDto: KakaoTokenDto): TokenResponse {
-        val oidcDecodePayload = oauthOidcHelper.getKakaoOIDCDecodePayload(kakaoTokenDto.idToken)
-        val kakaoUserInfoDto = getKakaoUserInfo(kakaoTokenDto)
+    fun isKakaoUserRegistered(tokenDto: TokenDto): TokenResponse {
+        val oidcDecodePayload = oauthOidcHelper.getKakaoOIDCDecodePayload(tokenDto.idToken)
+        val kakaoUserInfoDto = getKakaoUserInfo(tokenDto)
 
         if (!checkUserAccountExists(oidcDecodePayload)) {
             saveUserAccount(kakaoUserInfoDto)
@@ -64,9 +65,9 @@ class AuthService(
         return TokenResponse.from(jwtTokenProvider.create(kakaoUserInfoDto))
     }
 
-    fun isGoogleUserRegistered(googleTokenDto: GoogleTokenDto): TokenResponse {
-        val oidcDecodePayload = oauthOidcHelper.getGoogleOidcDecodePayload(googleTokenDto.idToken)
-        val googleUserInfoDto = getGoogleUserInfo(googleTokenDto)
+    fun isGoogleUserRegistered(tokenDto: TokenDto): TokenResponse {
+        val oidcDecodePayload = oauthOidcHelper.getGoogleOidcDecodePayload(tokenDto.idToken)
+        val googleUserInfoDto = getGoogleUserInfo(tokenDto)
 
         if (!checkUserAccountExists(oidcDecodePayload)) {
             saveUserAccount(googleUserInfoDto)
@@ -83,12 +84,12 @@ class AuthService(
         return userAccountRepository.existsBySub(oidcDecodePayload.sub)
     }
 
-    private fun getKakaoUserInfo(kakaoTokenDto: KakaoTokenDto): UserInfoDto {
-        return kakaoInfoClient.kakaoUserInfo("${kakaoTokenDto.tokenType} ${kakaoTokenDto.accessToken}")
+    private fun getKakaoUserInfo(tokenDto: TokenDto): UserInfoDto {
+        return kakaoInfoClient.kakaoUserInfo("${tokenDto.tokenType} ${tokenDto.accessToken}")
     }
 
-    private fun getGoogleUserInfo(googleTokenDto: GoogleTokenDto): UserInfoDto {
-        return googleInfoClient.googleUserInfo("${googleTokenDto.tokenType} ${googleTokenDto.accessToken}")
+    private fun getGoogleUserInfo(tokenDto: TokenDto): UserInfoDto {
+        return googleInfoClient.googleUserInfo("${tokenDto.tokenType} ${tokenDto.accessToken}")
     }
 
     private fun saveUserAccount(userInfoDto: UserInfoDto) {

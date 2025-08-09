@@ -33,14 +33,10 @@ class TestController(
         return "redirect:" + kakaoProperties.authUrl
     }
 
-    @GetMapping("/kakao/callback")
+    @GetMapping("/auth/kakao/callback")
     @ResponseBody
     fun getKakaoToken(@RequestParam code: String): KakaoTokenDto {
-        val kakaoTokenDto = authService.getKakaoToken(code)
-
-        authService.isKakaoUserRegistered(kakaoTokenDto)
-
-        return kakaoTokenDto
+        return authService.getKakaoToken(code)
     }
 
     companion object {

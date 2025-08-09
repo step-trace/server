@@ -1,12 +1,11 @@
 package com.steptrace.auth.dto.kakao
 
-import com.steptrace.auth.dto.TokenDto
-
+@Deprecated("테스트 후 삭제 예정")
 data class KakaoTokenDto(
-        override val tokenType: String,
-        override val accessToken: String,
-        override val idToken: String,
-        override val expiresIn: Long,
+        val tokenType: String,
+        val accessToken: String,
+        val idToken: String,
+        val expiresIn: Long,
         val refreshToken: String,
         val refreshTokenExpiresIn: Long
-): TokenDto
+)

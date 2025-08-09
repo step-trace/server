@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam
         url = "\${feign.client.google.token-url}"
 )
 interface GoogleOauthClient {
+    @Deprecated("테스트 후 삭제 예정")
     @PostMapping(
             "/token",
             consumes = ["application/x-www-form-urlencoded"])

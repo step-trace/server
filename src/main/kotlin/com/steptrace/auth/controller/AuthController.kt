@@ -1,8 +1,7 @@
 package com.steptrace.auth.controller
 
+import com.steptrace.auth.dto.TokenDto
 import com.steptrace.auth.dto.TokenResponse
-import com.steptrace.auth.dto.google.GoogleTokenDto
-import com.steptrace.auth.dto.kakao.KakaoTokenDto
 import com.steptrace.auth.service.AuthService
 import com.steptrace.config.security.CustomUserDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -15,16 +14,16 @@ class AuthController(
 ) {
     @PostMapping("/v1/kakao")
     fun kakaoLogin(
-            @RequestBody kakaoTokenDto: KakaoTokenDto
+            @RequestBody tokenDto: TokenDto
     ): TokenResponse {
-        return authService.isKakaoUserRegistered(kakaoTokenDto)
+        return authService.isKakaoUserRegistered(tokenDto)
     }
 
     @PostMapping("/v1/google")
     fun googleLogin(
-            @RequestBody googleTokenDto: GoogleTokenDto
+            @RequestBody tokenDto: TokenDto
     ): TokenResponse {
-        return authService.isGoogleUserRegistered(googleTokenDto)
+        return authService.isGoogleUserRegistered(tokenDto)
     }
 
     @DeleteMapping("/users")

@@ -33,7 +33,7 @@ class ControllerAdvice {
         return ErrorResponse(errorCode = "UNAUTHORIZED", message = e.displayMessage)
     }
 
-    @ExceptionHandler(RuntimeException::class)
+    @ExceptionHandler(StepTraceException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleRuntimeException(e: StepTraceException): ErrorResponse {
         return ErrorResponse(errorCode = "INTERNAL_SERVER_ERROR", message = e.displayMessage ?: "알 수 없는 에러가 발생했습니다.")
