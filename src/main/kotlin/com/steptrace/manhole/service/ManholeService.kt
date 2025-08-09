@@ -4,6 +4,7 @@ import com.steptrace.exception.IdNotFoundException
 import com.steptrace.exception.ManholeStatusException
 import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeDto
+import com.steptrace.manhole.mapper.ManholeMapper.toEntity
 import com.steptrace.manhole.repository.ManholeRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -39,9 +40,8 @@ class ManholeService(
                 .takeIf { it.afterImageUrls.isNullOrEmpty() }
                 ?: throw ManholeStatusException("이미 처리된 맨홀입니다.")
 
-        val updatedManhole = manhole.copy(status = ProcessStatus.COMPLETED, afterImageUrls = afterImageUrls)
-
-        manholeRepository.updatedManholeWithImages(updatedManhole)
+        manholeRepository.modifyManholeAfterImages(manhole.id!!, afterImageUrls)
+        manholeRepository.modifyManholeStatus(toEntity(manhole), ProcessStatus.COMPLETED)
     }
 
     @Transactional(readOnly = true)

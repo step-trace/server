@@ -1,19 +1,28 @@
 package com.steptrace.manhole.repository
 
 import com.steptrace.exception.IdNotFoundException
+import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeDto
 import com.steptrace.manhole.dto.ManholeEntity
 import com.steptrace.manhole.mapper.ManholeMapper.toAfterImageEntity
 import com.steptrace.manhole.mapper.ManholeMapper.toBeforeImageEntity
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
 import com.steptrace.manhole.mapper.ManholeMapper.toEntity
+import com.steptrace.manhole.mapper.ManholeMapper.toPendingDto
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 class ManholeClient(
         private val manholeJpaRepository: ManholeJpaRepository,
         private val manholeAttachmentJpaRepository: ManholeAttachmentJpaRepository
 ) : ManholeRepository {
+
+    override fun loadManholeById(id: Long) : ManholeEntity {
+        return manholeJpaRepository.findById(id).orElseThrow {
+            IdNotFoundException("manhole")
+        }
+    }
 
     override fun loadManholesWithAttachment(): List<ManholeDto> {
         val manholes = manholeJpaRepository.findAll()
@@ -25,9 +34,7 @@ class ManholeClient(
     }
 
     override fun loadManholeWithAttachmentById(id: Long): ManholeDto {
-        val manholeEntity = manholeJpaRepository.findById(id).orElseThrow {
-            IdNotFoundException("manhole")
-        }
+        val manholeEntity = loadManholeById(id)
 
         val manholeAttachments = manholeAttachmentJpaRepository.findAllByManholeId(id)
 
@@ -38,19 +45,17 @@ class ManholeClient(
         return manholeJpaRepository.save(toEntity(manholeDto))
     }
 
-    override fun updatedManholeWithImages(updatedManhole: ManholeDto) {
-        val manholeEntity = manholeJpaRepository.findById(updatedManhole.id!!).orElseThrow {
-            IdNotFoundException("manhole")
-        }
-
-        manholeEntity.status = updatedManhole.status.value
-        manholeJpaRepository.save(manholeEntity)
-
+    override fun modifyManholeAfterImages(id: Long, afterImageUrls: List<String>) {
         manholeAttachmentJpaRepository.saveAll(
-            updatedManhole.afterImageUrls!!.map { imageUrl ->
-                toAfterImageEntity(manholeEntity.id!!, imageUrl)
+            afterImageUrls.map { imageUrl ->
+                toAfterImageEntity(id, imageUrl)
             }
         )
+    }
+
+    override fun modifyManholeStatus(manholeEntity: ManholeEntity, status: ProcessStatus) {
+        manholeEntity.status = status.value
+        manholeJpaRepository.save(manholeEntity)
     }
 
     override fun saveManholeAttachments(manholeId: Long, imageUrls: List<String>) {
@@ -63,6 +68,13 @@ class ManholeClient(
         return manholes.map { manhole ->
             val attachments = manholeAttachmentJpaRepository.findAllByManholeId(manhole.id!!)
             toDto(manhole, attachments)
+        }
+    }
+
+    override fun loadPendingManholesWithAttachmentBetween(startDateTime: LocalDateTime, endDateTime: LocalDateTime): List<ManholeDto> {
+        return manholeJpaRepository.findByCreatedAtBetween(startDateTime, endDateTime).map { manhole ->
+            val attachments = manholeAttachmentJpaRepository.findAllByManholeId(manhole.id!!)
+            toPendingDto(manhole, attachments)
         }
     }
 }

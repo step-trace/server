@@ -44,8 +44,28 @@ object ManholeMapper {
         )
     }
 
+    fun toPendingDto(manholeEntity: ManholeEntity, manholeAttachments: List<ManholeAttachmentEntity>) : ManholeDto {
+        return ManholeDto(
+                id = manholeEntity.id,
+                latitude = manholeEntity.latitude,
+                longitude = manholeEntity.longitude,
+                status = ProcessStatus.fromValue(manholeEntity.status),
+                title = manholeEntity.title,
+                place = manholeEntity.place,
+                userDescription = manholeEntity.userDescription,
+                userSub = manholeEntity.userSub,
+                generatedDescription = manholeEntity.generatedDescription,
+                beforeImageUrls = manholeAttachments.filterNot { it.isCompleted }.map { it.imageUrl },
+                createdBy = manholeEntity.createdBy,
+                createdAt = manholeEntity.createdAt,
+                updatedBy = manholeEntity.updatedBy,
+                updatedAt = manholeEntity.updatedAt
+        )
+    }
+
     fun toEntity(dto: ManholeDto): ManholeEntity = with(dto) {
         ManholeEntity(
+                id = id,
                 latitude = latitude,
                 longitude = longitude,
                 status = status.value,
