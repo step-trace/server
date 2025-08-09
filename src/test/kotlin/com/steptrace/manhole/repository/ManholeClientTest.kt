@@ -1,5 +1,9 @@
 package com.steptrace.manhole.repository
 
+import com.steptrace.annotation.UnitTest
+import com.steptrace.exception.IdNotFoundException
+import com.steptrace.manhole.code.ProcessStatus
+import com.steptrace.manhole.dto.ManholeAttachmentEntity
 import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.BEFORE_IMAGE_ATTACHMENT
 import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.MIXED_ATTACHMENTS
 import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.MULTIPLE_BEFORE_ATTACHMENTS
@@ -9,11 +13,6 @@ import com.steptrace.manhole.stub.ManholeEntityStub
 import com.steptrace.manhole.stub.ManholeEntityStub.DEFAULT_MANHOLE_ENTITY
 import com.steptrace.manhole.stub.ManholeEntityStub.MANHOLE_ENTITY_ID_300
 import com.steptrace.manhole.stub.ManholeEntityStub.SAVED_MANHOLE_ENTITY
-import com.steptrace.annotation.UnitTest
-import com.steptrace.exception.IdNotFoundException
-import com.steptrace.manhole.repository.ManholeAttachmentJpaRepository
-import com.steptrace.manhole.repository.ManholeClient
-import com.steptrace.manhole.repository.ManholeJpaRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -176,5 +175,63 @@ class ManholeClientTest {
 
         verify(exactly = 1) { manholeJpaRepository.findById(manholeId) }
         verify(exactly = 1) { manholeAttachmentJpaRepository.findAllByManholeId(manholeId) }
+    }
+
+    @Test
+    @DisplayName("맨홀 작업 후 이미지를 성공적으로 저장한다")
+    fun should_modify_manhole_after_images_successfully() {
+        val manholeId = 100L
+        val afterImageUrls = listOf("after1.jpg", "after2.jpg", "after3.jpg")
+
+        every { manholeAttachmentJpaRepository.saveAll(any<List<ManholeAttachmentEntity>>()) } returns emptyList()
+
+        manholeClient.modifyManholeAfterImages(manholeId, afterImageUrls)
+
+        verify(exactly = 1) { manholeAttachmentJpaRepository.saveAll(any<List<ManholeAttachmentEntity>>()) }
+    }
+
+    @Test
+    @DisplayName("맨홀 상태를 성공적으로 수정한다")
+    fun should_modify_manhole_status_successfully() {
+        val manholeEntity = DEFAULT_MANHOLE_ENTITY
+        val newStatus = ProcessStatus.COMPLETED
+        manholeEntity.status = newStatus.value
+
+        every { manholeJpaRepository.save(any()) } returns manholeEntity
+
+        manholeClient.modifyManholeStatus(manholeEntity, newStatus)
+
+        assertThat(manholeEntity.status).isEqualTo(newStatus.value)
+        verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
+    }
+
+    @Test
+    @DisplayName("진행 중인 맨홀을 완료 상태로 변경한다")
+    fun should_change_manhole_status_from_in_progress_to_completed() {
+        val manholeEntity = DEFAULT_MANHOLE_ENTITY
+        val newStatus = ProcessStatus.COMPLETED
+        manholeEntity.status = ProcessStatus.IN_PROGRESS.value
+
+        every { manholeJpaRepository.save(any()) } returns manholeEntity
+
+        manholeClient.modifyManholeStatus(manholeEntity, newStatus)
+
+        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.COMPLETED.value)
+        verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
+    }
+
+    @Test
+    @DisplayName("대기 중인 맨홀을 진행 중 상태로 변경한다")
+    fun should_change_manhole_status_from_pending_to_in_progress() {
+        val manholeEntity = DEFAULT_MANHOLE_ENTITY
+        val newStatus = ProcessStatus.IN_PROGRESS
+        manholeEntity.status = ProcessStatus.PENDING.value
+
+        every { manholeJpaRepository.save(any()) } returns manholeEntity
+
+        manholeClient.modifyManholeStatus(manholeEntity, newStatus)
+
+        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.IN_PROGRESS.value)
+        verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
     }
 }

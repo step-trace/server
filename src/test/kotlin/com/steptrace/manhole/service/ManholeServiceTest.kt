@@ -1,16 +1,17 @@
 package com.steptrace.manhole.service
 
+import com.steptrace.annotation.UnitTest
+import com.steptrace.exception.IdNotFoundException
+import com.steptrace.exception.ManholeStatusException
+import com.steptrace.manhole.repository.ManholeRepository
 import com.steptrace.manhole.stub.ManholeDtoStub.BOUNDARY_NORTHEAST_MANHOLE
 import com.steptrace.manhole.stub.ManholeDtoStub.BOUNDARY_SOUTHWEST_MANHOLE
 import com.steptrace.manhole.stub.ManholeDtoStub.DEFAULT_MANHOLE
 import com.steptrace.manhole.stub.ManholeDtoStub.IN_BOUNDS_MANHOLE
+import com.steptrace.manhole.stub.ManholeDtoStub.MANHOLE_WITH_AFTER_IMAGES
 import com.steptrace.manhole.stub.ManholeDtoStub.OUT_OF_BOUNDS_MANHOLE
 import com.steptrace.manhole.stub.ManholeEntityStub.MANHOLE_ENTITY_WITH_NULL_ID
 import com.steptrace.manhole.stub.ManholeEntityStub.SAVED_MANHOLE_ENTITY
-import com.steptrace.annotation.UnitTest
-import com.steptrace.exception.IdNotFoundException
-import com.steptrace.manhole.repository.ManholeRepository
-import com.steptrace.manhole.service.ManholeService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -153,5 +154,22 @@ internal class ManholeServiceTest {
 
         verify(exactly = 1) { manholeRepository.saveManhole(manholeDto) }
         verify(exactly = 0) { manholeRepository.saveManholeAttachments(any(), any()) }
+    }
+
+    @Test
+    @DisplayName("이미 처리된 맨홀에 작업 후 이미지 추가 시도 시 예외를 발생시킨다")
+    fun should_throw_exception_when_trying_to_add_images_to_already_processed_manhole() {
+        val manholeId = 100L
+        val afterImageUrls = listOf("after1.jpg", "after2.jpg")
+        
+        every { manholeRepository.loadManholeWithAttachmentById(manholeId) } returns MANHOLE_WITH_AFTER_IMAGES
+        
+        assertThatThrownBy { manholeService.addCompletedManholeImages(manholeId, afterImageUrls) }
+            .isInstanceOf(ManholeStatusException::class.java)
+            .hasMessage("이미 처리된 맨홀입니다.")
+        
+        verify(exactly = 1) { manholeRepository.loadManholeWithAttachmentById(manholeId) }
+        verify(exactly = 0) { manholeRepository.modifyManholeAfterImages(any(), any()) }
+        verify(exactly = 0) { manholeRepository.modifyManholeStatus(any(), any()) }
     }
 }
