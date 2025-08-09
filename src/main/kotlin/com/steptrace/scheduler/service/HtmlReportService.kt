@@ -3,12 +3,13 @@ package com.steptrace.scheduler.service
 import com.steptrace.manhole.dto.ManholeDto
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
-import java.io.FileWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Service
-class HtmlReportService {
+class HtmlReportService(
+    private val s3Service: S3Service
+) {
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         private val DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -18,7 +19,7 @@ class HtmlReportService {
         val fileName = "manhole_report_${date.format(DATE_FORMATTER)}.html"
         val htmlContent = buildHtmlFromTemplate(manholes, date)
 
-        FileWriter(fileName).use { it.write(htmlContent) }
+        s3Service.uploadHtmlFile(fileName, htmlContent, date.toLocalDate())
     }
 
     private fun buildHtmlFromTemplate(manholes: List<ManholeDto>, date: LocalDateTime): String {

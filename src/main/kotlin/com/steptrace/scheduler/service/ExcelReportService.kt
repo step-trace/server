@@ -9,12 +9,13 @@ import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Service
-class ExcelReportService {
+class ExcelReportService(
+    private val s3Service: S3Service
+) {
 
     companion object {
         private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -24,7 +25,8 @@ class ExcelReportService {
     fun generateDailyReport(manholes: List<ManholeDto>, date: LocalDateTime) {
         val fileName = generateFileName(date)
         val excelData = generateExcelData(manholes)
-        saveToFile(excelData, fileName)
+
+        s3Service.uploadExcelFile(fileName, excelData, date.toLocalDate())
     }
 
     private fun generateFileName(date: LocalDateTime): String {
@@ -84,16 +86,6 @@ class ExcelReportService {
     private fun autoSizeColumns(sheet: Sheet) {
         repeat(ManholeExcelColumn.values().size) { columnIndex ->
             sheet.autoSizeColumn(columnIndex)
-        }
-    }
-
-    private fun saveToFile(data: ByteArray, fileName: String) {
-        try {
-            FileOutputStream(fileName).use { fileOut ->
-                fileOut.write(data)
-            }
-        } catch (e: Exception) {
-            throw ExcelGenerationException()
         }
     }
 }
