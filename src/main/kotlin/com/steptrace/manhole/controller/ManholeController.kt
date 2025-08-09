@@ -54,6 +54,14 @@ class ManholeController(
         manholeService.create(toDto(manholeRequest, userAccount.password))
     }
 
+    @PostMapping("/v1/manholes/completed/images/{id}")
+    fun completedManholeImages(
+            @PathVariable id: Long,
+            @RequestBody afterImageUrls: List<String>
+    ) {
+        manholeService.addCompletedManholeImages(id, afterImageUrls)
+    }
+
     @GetMapping("/v1/manholes/my-reports")
     fun myReportManholes(
             @AuthenticationPrincipal userAccount: CustomUserDetails

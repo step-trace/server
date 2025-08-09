@@ -18,6 +18,7 @@
 - [x] 나의 처리 중인 제보 상세 조회
 - [x] 나의 처리 완료된 제보 상세 조회
 - [x] 회원 탈퇴
+- [x] 처리 완료 맨홀 이미지 등록
 
 ## 카카오 로그인
 
@@ -356,7 +357,7 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 처리 완료된 제보의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/api/v1/manholes/my-reports/completed/{id}
+### **GET** /api/v1/manholes/my-reports/completed/{id}
 
 - id: 제보 ID
 
@@ -392,4 +393,25 @@ presigned URL을 받아 업로드를 위한 API입니다.
 회원 탈퇴를 위한 API입니다.
 
 ### **DELETE** /api/auth/users
+
+---
+
+## 처리 완료 맨홀 이미지 등록
+
+처리 완료된 맨홀의 이미지를 등록하기 위한 API입니다.
+
+### **POST** /api/v1/manholes/completed/images/{id}
+
+- id: 맨홀 ID
+
+### Request
+
+```json
+{
+  "after_image_url": [
+    "https://example.com/completed_image1.jpg",
+    "https://example.com/completed_image2.jpg"
+  ]
+}
+```
 

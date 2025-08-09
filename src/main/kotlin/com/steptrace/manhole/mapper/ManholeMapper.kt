@@ -57,11 +57,19 @@ object ManholeMapper {
         )
     }
 
-    fun toEntity(manholeId: Long, imageUrl: String): ManholeAttachmentEntity {
+    fun toBeforeImageEntity(manholeId: Long, imageUrl: String): ManholeAttachmentEntity {
         return ManholeAttachmentEntity(
             manholeId = manholeId,
                 imageUrl = imageUrl,
                 isCompleted = false
+        )
+    }
+
+    fun toAfterImageEntity(manholeId: Long, imageUrl: String): ManholeAttachmentEntity {
+        return ManholeAttachmentEntity(
+                manholeId = manholeId,
+                imageUrl = imageUrl,
+                isCompleted = true
         )
     }
 }

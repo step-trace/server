@@ -13,4 +13,5 @@ interface ManholeRepository {
     fun saveManholeAttachments(manholeId: Long, attachments: List<String>)
 
     fun loadManholesWithAttachmentsBySub(sub: String): List<ManholeDto>
+    fun updatedManholeWithImages(updatedManhole: ManholeDto)
 }

@@ -25,26 +25,26 @@ class ManholeEntity(
         val longitude: Double,
 
         @Column(name = "status")
-        val status: String,
+        var status: String,
 
         @Column(name = "title")
-        val title: String,
+        var title: String,
 
         @Column(name = "place")
         val place: String,
 
         @Column(name = "generated_description")
         @Convert(converter = JsonStringToArrayStringConverter::class)
-        val generatedDescription: List<String>,
+        var generatedDescription: List<String>,
 
         @Column(name = "user_description")
-        val userDescription: String? = null,
+        var userDescription: String? = null,
 
         @Column(name = "process_agency")
-        val processAgency: String? = null,
+        var processAgency: String? = null,
 
         @Column(name = "process_description")
-        val processDescription: String? = null,
+        var processDescription: String? = null,
 
         @Column(name = "user_sub")
         val userSub: String
