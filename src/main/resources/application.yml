@@ -1,4 +1,7 @@
 spring:
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB_URL}
@@ -26,6 +29,7 @@ feign:
       token-uri: /oauth/token
       oicd-open-key-uri: /.well-known/jwks.json
       rest-api-key: ${KAKAO_REST_API_KEY}
+      native_key: ${KAKAO_NATIVE_KEY}
       redirect-uri: ${KAKAO_REDIRECT_URI}
       grant-type: authorization_code
       oicd-base-url: https://kapi.kakao.com

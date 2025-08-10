@@ -36,7 +36,7 @@ class OauthOidcHelper(
         return getPayloadFromIdToken(
                 token,
                 kakaoProperties.baseUrl,
-                kakaoProperties.restApiKey,
+                kakaoProperties.nativeKey,
                 oidcPublicKeysResponse
         )
     }

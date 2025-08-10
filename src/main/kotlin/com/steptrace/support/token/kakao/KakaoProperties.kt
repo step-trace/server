@@ -10,6 +10,7 @@ data class KakaoProperties(
         var tokenUri: String,
         var oicdOpenKeyUri: String,
         var restApiKey: String,
+        var nativeKey: String,
         var redirectUri: String,
         var grantType: String
 )
