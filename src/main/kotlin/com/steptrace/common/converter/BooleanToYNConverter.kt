@@ -4,13 +4,13 @@ import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Convert
 
 @Convert
-class BooleanToYNConverter : AttributeConverter<Boolean, String> {
-    override fun convertToDatabaseColumn(attribute: Boolean): String = when (attribute) {
+class BooleanToYNConverter : AttributeConverter<Boolean?, String?> {
+    override fun convertToDatabaseColumn(attribute: Boolean?): String = when (attribute) {
         true -> "Y"
-        false -> "N"
+        else -> "N"
     }
 
-    override fun convertToEntityAttribute(dbData: String): Boolean = when (dbData) {
+    override fun convertToEntityAttribute(dbData: String?): Boolean = when (dbData) {
         "Y" -> true
         else -> false
     }
