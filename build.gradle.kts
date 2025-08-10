@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
-    id("org.springframework.boot") version "3.2.0"
+    id("org.springframework.boot") version "3.4.8"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("plugin.jpa") version "1.9.25"
 }
@@ -25,7 +25,8 @@ repositories {
     mavenCentral()
 }
 
-extra["springCloudVersion"] = "2023.0.0"
+extra["springCloudVersion"] = "2024.0.0"
+extra["springAiVersion"] = "1.0.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-batch")
@@ -42,6 +43,7 @@ dependencies {
     implementation ("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
     implementation("org.apache.poi:poi:5.4.0")
     implementation("org.apache.poi:poi-ooxml:5.4.0")
+    implementation("org.springframework.ai:spring-ai-starter-model-anthropic")
     implementation ("com.opencsv:opencsv:5.10")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("com.mysql:mysql-connector-j")
@@ -61,6 +63,7 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
     }
 }
 
