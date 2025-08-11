@@ -15,9 +15,10 @@ class ManholeService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getManholeMarkers(swlat: Double, swlng: Double, nelat: Double, nelng: Double): List<ManholeDto> {
+    fun getManholeMarkers(latitude: Double, longitude: Double): List<ManholeDto> {
         return manholeRepository.loadManholesWithAttachment().filter { manhole ->
-            manhole.latitude in swlat..nelat && manhole.longitude in swlng..nelng
+            manhole.latitude in latitude - LAT_SHIFT..latitude + LAT_SHIFT
+                    && manhole.longitude in longitude - LNG_SHIFT..longitude + LNG_SHIFT
         }
     }
 
@@ -47,5 +48,10 @@ class ManholeService(
     @Transactional(readOnly = true)
     fun getManholesFromMyReport(sub: String): List<ManholeDto> {
         return manholeRepository.loadManholesWithAttachmentsBySub(sub)
+    }
+
+    companion object {
+        private const val LAT_SHIFT = 0.01
+        private const val LNG_SHIFT = 0.01
     }
 }

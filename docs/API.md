@@ -77,12 +77,10 @@
 
 지도에서 현 위치 주변의 맨홀을 표시하기 위한 API입니다.
 
-### **GET** /api/v1/manholes?swLat={swLat}&swLng={swLng}&neLat={neLat}&neLng={neLng}
+### **GET** /api/v1/manholes?latitude={latitude}&longitude={longitude}
 
-- swLat: 남서쪽 위도
-- swLng: 남서쪽 경도
-- neLat: 북동쪽 위도
-- neLng: 북동쪽 경도
+- latitude: 위도
+- longitude: 경도
 
 ### Response
 

@@ -21,12 +21,10 @@ class ManholeController(
 
     @GetMapping("/v1/manholes")
     fun manholeMarkers(
-            @RequestParam swLat: Double,
-            @RequestParam swLng: Double,
-            @RequestParam neLat: Double,
-            @RequestParam neLng: Double
+            @RequestParam latitude: Double,
+            @RequestParam longitude: Double,
     ) : List<ManholeMakerResponse> {
-        return manholeService.getManholeMarkers(swLat, swLng, neLat, neLng).map {
+        return manholeService.getManholeMarkers(latitude, longitude).map {
             ManholeMakerResponse.from(it)
         }
     }
