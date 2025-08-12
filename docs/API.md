@@ -19,6 +19,8 @@
 - [x] 나의 처리 완료된 제보 상세 조회
 - [x] 회원 탈퇴
 - [x] 처리 완료 맨홀 이미지 등록
+- [x] 비정상 맨홀 판단 AI 호출 결과
+- [x] 정상 맨홀 판단 AI 호출 결과
 
 ## 카카오 로그인
 
@@ -413,3 +415,77 @@ presigned URL을 받아 업로드를 위한 API입니다.
 }
 ```
 
+---
+
+## 비정상 맨홀 판단 AI 호출 결과
+
+비정상 맨홀 판단 AI 호출 결과를 조회하기 위한 API입니다.
+
+### **POST** /api/v1/ai/abnormal-manhole/image
+
+### Request
+
+```json
+[
+  {
+    "image_url": "https://step-trace.s3.ap-northeast-2.amazonaws.com/images/manholes/7ec5c64ecb4011988ec5f9bdacc60fb95ebdd229.png",
+    "content_type": "image/png"
+  },
+  {
+    "image_url": "https://step-trace.s3.ap-northeast-2.amazonaws.com/images/manholes/455a0c487bb36213834e2f3536292a3fa04114e3.png",
+    "content_type": "image/png"
+  }
+]
+```
+
+### Response
+
+- 이미지 중 하나라도 정상 또는 허용 범위의 맨홀이 있는 경우
+- 이미지 중 하나라도 맨홀이 아닌 경우
+
+```String
+false
+```
+
+- 모든 이미지가 비정상 맨홀로 판단된 경우에만 아래 형식으로 응답합니다.
+- 위험도: [상/중/하], [주요 손상], [문제점], [안전 위험]
+
+```String
+위험도: 중, 표면 균열 발생, 테라조 재질 균열로 인한 내구성 저하, 보행자 발목 부상 위험 존재
+```
+
+## 정상 맨홀 판단 AI 호출 결과
+
+정상 맨홀 판단 AI 호출 결과를 조회하기 위한 API입니다.
+
+### **POST** /api/v1/ai/normal-manhole/image
+
+### Request
+
+```json
+[
+  {
+    "image_url": "https://step-trace.s3.ap-northeast-2.amazonaws.com/images/manholes/7ec5c64ecb4011988ec5f9bdacc60fb95ebdd229.png",
+    "content_type": "image/png"
+  },
+  {
+    "image_url": "https://step-trace.s3.ap-northeast-2.amazonaws.com/images/manholes/455a0c487bb36213834e2f3536292a3fa04114e3.png",
+    "content_type": "image/png"
+  }
+]
+```
+
+### Response
+
+- 이미지 중 하나라도 비정상 맨홀이 있는 경우
+- 이미지 중 하나라도 맨홀이 아닌 경우
+
+```String
+false
+```
+
+- 이미지들 전부가 정상 맨홀일 경우에만 true를 반환합니다.
+
+```String
+true
+```
