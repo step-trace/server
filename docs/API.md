@@ -21,6 +21,7 @@
 - [x] 처리 완료 맨홀 이미지 등록
 - [x] 비정상 맨홀 판단 AI 호출 결과
 - [x] 정상 맨홀 판단 AI 호출 결과
+- [x] FCM 메시지 전송 API
 
 ## 카카오 로그인
 
@@ -488,4 +489,22 @@ false
 
 ```String
 true
+```
+
+---
+
+## FCM 메시지 전송 API
+
+- FCM 메시지를 전송하는 API입니다.
+
+### **POST** /api/push/v1/fcm
+
+### Request
+
+```json
+{
+	"token": "dd",
+  	"title": "hi",
+  	"body": "hello"
+}
 ```
