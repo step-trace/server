@@ -35,94 +35,78 @@ internal class ManholeServiceTest {
     @Test
     @DisplayName("지정된 범위 내의 맨홀 마커들을 조회한다")
     fun should_return_manholes_within_specified_bounds_when_getting_manhole_markers() {
-        val southwestLatitude = 37.5000
-        val southwestLongitude = 126.9000
-        val northeastLatitude = 37.6000
-        val northeastLongitude = 127.0000
-        
+        val latitude = 37.5000
+        val longitude = 126.9000
+
         val allManholes = listOf(IN_BOUNDS_MANHOLE, OUT_OF_BOUNDS_MANHOLE)
-        
+
         every { manholeRepository.loadManholesWithAttachment() } returns allManholes
-        
+
         val result = manholeService.getManholeMarkers(
-            southwestLatitude, 
-            southwestLongitude, 
-            northeastLatitude, 
-            northeastLongitude
+                latitude,
+                longitude,
         )
-        
+
         assertThat(result).hasSize(1)
         assertThat(result[0]).isEqualTo(IN_BOUNDS_MANHOLE)
-        
+
         verify(exactly = 1) { manholeRepository.loadManholesWithAttachment() }
     }
-    
+
     @Test
     @DisplayName("범위 내에 맨홀이 없으면 빈 리스트를 반환한다")
     fun should_return_empty_list_when_no_manholes_exist_within_specified_bounds() {
-        val southwestLatitude = 37.5000
-        val southwestLongitude = 126.9000
-        val northeastLatitude = 37.6000
-        val northeastLongitude = 127.0000
-        
+        val latitude = 37.5000
+        val longitude = 126.9000
+
         every { manholeRepository.loadManholesWithAttachment() } returns listOf(OUT_OF_BOUNDS_MANHOLE)
-        
+
         val result = manholeService.getManholeMarkers(
-            southwestLatitude, 
-            southwestLongitude, 
-            northeastLatitude, 
-            northeastLongitude
+                latitude,
+                longitude,
         )
-        
+
         assertThat(result).isEmpty()
-        
+
         verify(exactly = 1) { manholeRepository.loadManholesWithAttachment() }
     }
-    
+
     @Test
     @DisplayName("경계값에 있는 맨홀도 포함해서 반환한다")
     fun should_include_boundary_manholes_when_getting_manholes_within_bounds() {
-        val southwestLatitude = 37.5000
-        val southwestLongitude = 126.9000
-        val northeastLatitude = 37.6000
-        val northeastLongitude = 127.0000
-        
+        val latitude = 37.5000
+        val longitude = 126.9000
+
         val boundaryManholes = listOf(BOUNDARY_SOUTHWEST_MANHOLE, BOUNDARY_NORTHEAST_MANHOLE)
-        
+
         every { manholeRepository.loadManholesWithAttachment() } returns boundaryManholes
-        
+
         val result = manholeService.getManholeMarkers(
-            southwestLatitude, 
-            southwestLongitude, 
-            northeastLatitude, 
-            northeastLongitude
+                latitude,
+                longitude,
         )
-        
+
         assertThat(result).hasSize(2)
         assertThat(result).containsExactlyInAnyOrderElementsOf(boundaryManholes)
-        
+
         verify(exactly = 1) { manholeRepository.loadManholesWithAttachment() }
     }
-    
+
     @Test
     @DisplayName("데이터베이스에 맨홀이 없으면 빈 리스트를 반환한다")
     fun should_return_empty_list_when_no_manholes_exist_in_database() {
-        val southwestLatitude = 37.5000
-        val southwestLongitude = 126.9000
-        val northeastLatitude = 37.6000
-        val northeastLongitude = 127.0000
-        
+        val latitude = 37.5000
+        val longitude = 126.9000
+
         every { manholeRepository.loadManholesWithAttachment() } returns emptyList()
-        
+
         val result = manholeService.getManholeMarkers(
-            southwestLatitude, 
-            southwestLongitude, 
-            northeastLatitude, 
-            northeastLongitude
+                latitude,
+                longitude,
         )
-        
+
         assertThat(result).isEmpty()
-        
+
         verify(exactly = 1) { manholeRepository.loadManholesWithAttachment() }
     }
 
@@ -149,8 +133,8 @@ internal class ManholeServiceTest {
         every { manholeRepository.saveManhole(manholeDto) } returns MANHOLE_ENTITY_WITH_NULL_ID
 
         assertThatThrownBy { manholeService.create(manholeDto) }
-            .isInstanceOf(IdNotFoundException::class.java)
-            .hasMessage("manhole ID not found")
+                .isInstanceOf(IdNotFoundException::class.java)
+                .hasMessage("manhole ID not found")
 
         verify(exactly = 1) { manholeRepository.saveManhole(manholeDto) }
         verify(exactly = 0) { manholeRepository.saveManholeAttachments(any(), any()) }
@@ -161,13 +145,13 @@ internal class ManholeServiceTest {
     fun should_throw_exception_when_trying_to_add_images_to_already_processed_manhole() {
         val manholeId = 100L
         val afterImageUrls = listOf("after1.jpg", "after2.jpg")
-        
+
         every { manholeRepository.loadManholeWithAttachmentById(manholeId) } returns MANHOLE_WITH_AFTER_IMAGES
-        
+
         assertThatThrownBy { manholeService.addCompletedManholeImages(manholeId, afterImageUrls) }
-            .isInstanceOf(ManholeStatusException::class.java)
-            .hasMessage("이미 처리된 맨홀입니다.")
-        
+                .isInstanceOf(ManholeStatusException::class.java)
+                .hasMessage("이미 처리된 맨홀입니다.")
+
         verify(exactly = 1) { manholeRepository.loadManholeWithAttachmentById(manholeId) }
         verify(exactly = 0) { manholeRepository.modifyManholeAfterImages(any(), any()) }
         verify(exactly = 0) { manholeRepository.modifyManholeStatus(any(), any()) }
