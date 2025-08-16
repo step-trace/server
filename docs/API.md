@@ -239,7 +239,7 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 ```json
 {
-  "imageUrls": [
+  "image_urls": [
     "https://example.com/image1.jpg",
     "https://example.com/image2.jpg",
     "https://example.com/image3.jpg"
