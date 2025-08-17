@@ -35,8 +35,6 @@ object ManholeMapper {
                 generatedDescription = manholeEntity.generatedDescription,
                 beforeImageUrls = manholeAttachments.filterNot { it.isCompleted }.map { it.imageUrl },
                 afterImageUrls = manholeAttachments.filter { it.isCompleted }.map { it.imageUrl },
-                processAgency = manholeEntity.processAgency,
-                processDescription = manholeEntity.processDescription,
                 createdBy = manholeEntity.createdBy,
                 createdAt = manholeEntity.createdAt,
                 updatedBy = manholeEntity.updatedBy,

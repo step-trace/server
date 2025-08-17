@@ -10,7 +10,7 @@ object ManholeDtoStub {
         id = 1L,
         latitude = 37.5665,
         longitude = 126.978,
-        status = ProcessStatus.IN_PROGRESS,
+        status = ProcessStatus.REPORTED,
         title = "Test Manhole",
         place = "Test Location",
         generatedDescription = listOf("Test Description"),
@@ -30,7 +30,7 @@ object ManholeDtoStub {
         id = 10L,
         latitude = 37.5500,
         longitude = 126.9500,
-        status = ProcessStatus.IN_PROGRESS,
+        status = ProcessStatus.REPORTED,
         title = "In Bounds Manhole"
     )
     
@@ -54,7 +54,7 @@ object ManholeDtoStub {
         id = 40L,
         latitude = 37.6000,
         longitude = 127.0000,
-        status = ProcessStatus.IN_PROGRESS,
+        status = ProcessStatus.REPORTED,
         title = "Boundary Northeast Manhole"
     )
 
@@ -69,7 +69,7 @@ object ManholeDtoStub {
 
     val MANHOLE_WITH_ONLY_BEFORE_IMAGES = DEFAULT_MANHOLE.copy(
         id = 200L,
-        status = ProcessStatus.IN_PROGRESS,
+        status = ProcessStatus.REPORTED,
         title = "Test Manhole with Only Before Images",
         createdAt = LocalDateTime.of(2024, 2, 1, 14, 30),
         beforeImageUrls = listOf("before1.jpg", "before2.jpg", "before3.jpg"),
@@ -96,7 +96,7 @@ object ManholeDtoStub {
 
     val MANHOLE_WITH_SINGLE_BEFORE_IMAGE = DEFAULT_MANHOLE.copy(
         id = 500L,
-        status = ProcessStatus.IN_PROGRESS,
+        status = ProcessStatus.REPORTED,
         title = "Single Image Manhole",
         createdAt = LocalDateTime.of(2024, 5, 10, 11, 20),
         beforeImageUrls = listOf("single_image.jpg"),

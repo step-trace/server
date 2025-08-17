@@ -168,40 +168,6 @@
 
 ---
 
-## 처리 완료된 맨홀 조회
-
-처리 완료된 맨홀의 상세 정보를 조회하기 위한 API입니다.
-
-### **GET** /api/v1/manholes/completed/{id}
-
-- id: 맨홀 ID
-
-### Response
-
-```json
-{
-  "id": 2,
-  "latitude": 37.5670,
-  "longitude": 126.979,
-  "status": "처리완료",
-  "place": "서울특별시 중구",
-  "before_image_url": [
-    "https://example.com/image3.jpg",
-    "https://example.com/image4.jpg"
-  ],
-  "after_image_url": [
-    "https://example.com/image5.jpg",
-    "https://example.com/image6.jpg"
-  ],
-  "process_description": [
-    "철제 맨홀 교체 완료하였음."
-  ],
-  "created_at": "2023-09-02T12:00:00Z"
-}
-```
-
----
-
 ## 사진 업로드
 
 presigned URL을 받아 업로드를 위한 API입니다.
@@ -411,9 +377,7 @@ presigned URL을 받아 업로드를 위한 API입니다.
     "https://example.com/after_image1.jpg",
     "https://example.com/after_image2.jpg"
   ],
-  "user_description": "맨홀 뚜껑이 흔들려 보행 시 위험합니다. 조속한 처리 부탁드립니다.",
-  "process_agency": "중랑구 도시환경국 공원녹지과",
-  "process_description": "맨홀 뚜껑을 교체하였습니다. 안전하게 사용하시기 바랍니다."
+  "user_description": "맨홀 뚜껑이 흔들려 보행 시 위험합니다. 조속한 처리 부탁드립니다."
 }
 ```
 

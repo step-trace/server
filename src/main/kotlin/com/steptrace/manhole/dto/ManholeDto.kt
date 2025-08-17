@@ -12,8 +12,6 @@ data class ManholeDto(
         val place: String,
         val generatedDescription: List<String>,
         val userDescription: String? = null,
-        val processAgency: String? = null,
-        val processDescription: String? = null,
         val userSub: String,
         val beforeImageUrls: List<String>,
         val afterImageUrls: List<String>? = emptyList(),

@@ -210,7 +210,7 @@ class ManholeClientTest {
     fun should_change_manhole_status_from_in_progress_to_completed() {
         val manholeEntity = DEFAULT_MANHOLE_ENTITY
         val newStatus = ProcessStatus.COMPLETED
-        manholeEntity.status = ProcessStatus.IN_PROGRESS.name
+        manholeEntity.status = ProcessStatus.REPORTED.name
 
         every { manholeJpaRepository.save(any()) } returns manholeEntity
 
@@ -224,14 +224,14 @@ class ManholeClientTest {
     @DisplayName("대기 중인 맨홀을 진행 중 상태로 변경한다")
     fun should_change_manhole_status_from_pending_to_in_progress() {
         val manholeEntity = DEFAULT_MANHOLE_ENTITY
-        val newStatus = ProcessStatus.IN_PROGRESS
+        val newStatus = ProcessStatus.REPORTED
         manholeEntity.status = ProcessStatus.PENDING.name
 
         every { manholeJpaRepository.save(any()) } returns manholeEntity
 
         manholeClient.modifyManholeStatus(manholeEntity, newStatus)
 
-        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.IN_PROGRESS.name)
+        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.REPORTED.name)
         verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
     }
 }

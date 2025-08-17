@@ -14,7 +14,7 @@ data class ManholeMakerResponse(
                     id = id!!,
                     latitude = latitude,
                     longitude = longitude,
-                    status = status.value
+                    status = status.name
             )
         }
     }
@@ -46,7 +46,7 @@ data class ProcessingManholeResponse(
                     id = id!!,
                     latitude = latitude,
                     longitude = longitude,
-                    status = status.value,
+                    status = status.name,
                     place = place,
                     beforeImageUrls = beforeImageUrls,
                     generatedDescription = generatedDescription,
@@ -72,7 +72,7 @@ data class CompletedManholeResponse(
                     id = id!!,
                     latitude = latitude,
                     longitude = longitude,
-                    status = status.value,
+                    status = status.name,
                     place = place,
                     beforeImageUrls = beforeImageUrls,
                     afterImageUrls = afterImageUrls!!,
@@ -93,7 +93,7 @@ data class ManholesFromMyReportResponse(
         fun from(dto: ManholeDto): ManholesFromMyReportResponse = with(dto) {
             ManholesFromMyReportResponse(
                     id = id!!,
-                    status = status.value,
+                    status = status.name,
                     title = title,
                     createdAt = createdAt!!,
                     imageUrl = afterImageUrls?.firstOrNull() ?: beforeImageUrls.first()
@@ -115,7 +115,7 @@ data class ProcessingManholesFromMyReportResponse(
         fun from(dto: ManholeDto): ProcessingManholesFromMyReportResponse = with(dto) {
             ProcessingManholesFromMyReportResponse(
                     id = id!!,
-                    status = status.value,
+                    status = status.name,
                     title = title,
                     createdAt = createdAt!!,
                     place = place,
@@ -134,23 +134,19 @@ data class CompletedManholesFromMyReportResponse(
         val place: String,
         val beforeImageUrls: List<String>,
         val afterImageUrls: List<String>,
-        val userDescription: String?,
-        val processAgency: String,
-        val processDescription: String
+        val userDescription: String?
 ) {
     companion object {
         fun from(dto: ManholeDto): CompletedManholesFromMyReportResponse = with(dto) {
             CompletedManholesFromMyReportResponse(
                     id = id!!,
-                    status = status.value,
+                    status = status.name,
                     title = title,
                     createdAt = createdAt!!,
                     place = place,
                     beforeImageUrls = beforeImageUrls,
                     afterImageUrls = afterImageUrls!!,
                     userDescription = userDescription,
-                    processAgency = processAgency!!,
-                    processDescription = processDescription!!
             )
         }
     }

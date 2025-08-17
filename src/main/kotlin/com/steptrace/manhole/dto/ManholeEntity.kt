@@ -40,12 +40,6 @@ class ManholeEntity(
         @Column(name = "user_description")
         var userDescription: String? = null,
 
-        @Column(name = "process_agency")
-        var processAgency: String? = null,
-
-        @Column(name = "process_description")
-        var processDescription: String? = null,
-
         @Column(name = "user_sub")
         val userSub: String
 ): BaseAuditEntity()
