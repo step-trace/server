@@ -127,7 +127,7 @@
   "id": 2,
   "latitude": 37.5665,
   "longitude": 126.978,
-  "status": "REPORTED",
+  "status": "PENDING",
   "place": "서울특별시 송파구 올림픽로 317",
   "before_image_urls": [
     "https://example.com/image1.jpg",
