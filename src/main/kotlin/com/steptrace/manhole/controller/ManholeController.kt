@@ -48,9 +48,9 @@ class ManholeController(
     @PostMapping("/v1/manholes/completed/images/{id}")
     fun completedManholeImages(
             @PathVariable id: Long,
-            @RequestBody afterImageUrls: List<String>
+            @RequestBody afterImageRegistrationRequest: AfterImageRegistrationRequest
     ) {
-        manholeService.addCompletedManholeImages(id, afterImageUrls)
+        manholeService.addCompletedManholeImages(id, afterImageRegistrationRequest.afterImageUrl)
     }
 
     @GetMapping("/v1/manholes/my-reports")

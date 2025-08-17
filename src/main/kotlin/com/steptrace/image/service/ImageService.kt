@@ -16,12 +16,18 @@ class ImageService(
 ) {
 
     fun getPresignedUrls(requests: List<ImageS3UploadRequest>): List<ImageS3UploadResponse> {
+        validateNoDuplicates(requests)
+
         return requests.map { request ->
             val objectKey = generateObjectKey(request.fileName)
             val presignedUrl = generatePresignedUrl(objectKey, request.contentType)
 
             ImageS3UploadResponse.of(request.fileName, request.contentType, presignedUrl)
         }
+    }
+
+    private fun validateNoDuplicates(requests: List<ImageS3UploadRequest>) {
+        require(requests.distinct().size == requests.size) { "중복된 파일이 존재합니다." }
     }
 
     private fun generateObjectKey(fileName: String): String {
