@@ -239,14 +239,17 @@ presigned URL을 받아 업로드를 위한 API입니다.
 [
   {
     "file_name": "IMG_1234.jpg",
+    "content_type": "image/jpeg",
     "presigned_url": "https://example.com/presigned-url1"
   },
   {
     "file_name": "IMG_5678.jpg",
+    "content_type": "image/jpeg",
     "presigned_url": "https://example.com/presigned-url2"
   },
   {
     "file_name": "IMG_9101.jpg",
+    "content_type": "image/jpeg",
     "presigned_url": "https://example.com/presigned-url3"
   }
 ]

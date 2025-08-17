@@ -20,7 +20,7 @@ class ImageService(
             val objectKey = generateObjectKey(request.fileName)
             val presignedUrl = generatePresignedUrl(objectKey, request.contentType)
 
-            ImageS3UploadResponse.of(request.fileName, presignedUrl)
+            ImageS3UploadResponse.of(request.fileName, request.contentType, presignedUrl)
         }
     }
 
