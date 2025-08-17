@@ -6,7 +6,7 @@ data class ImageS3UploadResponse(
         val presignedUrl: String
 ) {
     companion object {
-        fun of(fileName: String, presignedUrl: String, contentType: String): ImageS3UploadResponse {
+        fun of(fileName: String, contentType: String, presignedUrl: String): ImageS3UploadResponse {
             return ImageS3UploadResponse(
                     fileName = fileName,
                     contentType = contentType,
