@@ -10,13 +10,11 @@
 - [x] 카카오 로그인
 - [x] 구글 로그인
 - [x] 현 위치 주변 맨홀 표시
-- [x] 처리 중인 맨홀 조회
-- [x] 처리 완료된 맨홀 조회
+- [x] 맨홀 상세 조회
 - [x] 사진 업로드
 - [x] 맨홀 등록
 - [x] 나의 제보 목록 조회
-- [x] 나의 처리 중인 제보 상세 조회
-- [x] 나의 처리 완료된 제보 상세 조회
+- [x] 나의 제보 상세 조회
 - [x] 회원 탈퇴
 - [x] 처리 완료 맨홀 이미지 등록
 - [x] 비정상 맨홀 판단 AI 호출 결과
@@ -62,10 +60,9 @@
 
 ```json
 {
-  "name": "김세훈",
-  "email": "shggm2000@naver.com",
-  "picture": "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
-  "jwt": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU2MDIzNzM2LCJlbWFpbCI6InNoZ2dtMjAwMEBuYXZlci5jb20iLCJuYW1lIjpudWxsLCJuaWNrbmFtZSI6Iuq5gOyEuO2biCIsImlzcyI6InN0ZXAtdHJhY2UifQ.0X8OFLiUL6-WHv3ymMoIEWm4TbSuYba-wHRpALgbBwj2aTeQi7YoLQyVqWaOUWkYfZ64NBmh1oyuPzUb43-kZA"
+  "token_type": "bearer",
+  "access_token": "CfrvEdQK2pmBVBasrfmuAB0MxahcgEPuAAAAAQoXEG8AAAGYWoed3FXuKbObXTiX",
+  "id_token": "eyJraWQiOiI5ZjI1MmRhZGQ1ZjIzM2Y5M2QyZmE1MjhkMTJmZWEiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJhOTExYTljZDRlZTk2YTFjMWQ0NjMwNTA3NTFlZDc2NSIsInN1YiI6IjQzNjI5NTYxMjQiLCJhdXRoX3RpbWUiOjE3NTM4NjU0OTMsImlzcyI6Imh0dHBzOi8va2F1dGgua2FrYW8uY29tIiwibmlja25hbWUiOiLquYDshLjtm4giLCJleHAiOjE3NTM4ODcwOTMsImlhdCI6MTc1Mzg2NTQ5M30.dALIn0OqREXv3l4hmMTEcuhNA6VCp5GBZfq36zsPKx3eA3-SQBAnJ7dlUqa6YZX3b0GEPKjbA91pOzvfuphtlVDbAIWTuC2wWVxS8qvyNZg-v2dgEtJpvoIf3F6zS0nG2_V7RUAIA6wNRKobn8y8PgFEqzgZygv2BmllUR55-QwkkhjfXilBWNHCORqofkx5T21W2q2qf1VKTN-U-fy_B25meg4vDvqcGaczUNbGPb8l8b-gPZPUV57iXDC0FrW6KjiLmDXV9txgmRCVXu_1DDvwnTSubhYbW2bU-5jeHNMzQZQud6I0zUDaJpVrVZekmfkyinYb3MTrT6N_OIxGdw"
 }
 ```
 
@@ -73,9 +70,11 @@
 
 ```json
 {
-  "jwt": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU0Mjc1MjQ1LCJlbWFpbCI6bnVsbCwibmFtZSI6bnVsbCwibmlja25hbWUiOiLquYDshLjtm4giLCJpc3MiOiJzdGVwLXRyYWNlIn0.EdVPWOG6eoarKxdkHIyhxjNHsFGSJgwhaFqx9AB40qdXMBbpc40XompcNkZO-Dfz_L5eTF5Oeqt8YgLPSfFaPg"
+  "name": "김세훈",
+  "email": "shggm2000@naver.com",
+  "picture": "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
+  "jwt": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MzYyOTU2MTI0IiwiZXhwIjoxNzU2MDIzNzM2LCJlbWFpbCI6InNoZ2dtMjAwMEBuYXZlci5jb20iLCJuYW1lIjpudWxsLCJuaWNrbmFtZSI6Iuq5gOyEuO2biCIsImlzcyI6InN0ZXAtdHJhY2UifQ.0X8OFLiUL6-WHv3ymMoIEWm4TbSuYba-wHRpALgbBwj2aTeQi7YoLQyVqWaOUWkYfZ64NBmh1oyuPzUb43-kZA"
 }
-
 ```
 
 ---
@@ -111,28 +110,24 @@
 
 ---
 
-## 처리 중인 맨홀 조회
+## 맨홀 상세 조회
 
-처리 중인 맨홀의 상세 정보를 조회하기 위한 API입니다.
+맨홀의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/v1/manholes/{status}/{id}
+### **GET** /api/v1/manholes/{id}
 
-- status: 맨홀 응답 타입
-  - processing
-  - completed
-  - 위 두 타입을 제외한 요청 시 예외 발생
 - id: 맨홀 ID
 
 ### Response
 
-### processing type
+### Pending Response
 
 ```json
 {
   "id": 2,
   "latitude": 37.5665,
   "longitude": 126.978,
-  "status": "접수 전",
+  "status": "REPORTED",
   "place": "서울특별시 송파구 올림픽로 317",
   "before_image_urls": [
     "https://example.com/image1.jpg",
@@ -149,14 +144,38 @@
 }
 ```
 
-### completed type
+### Reported Response
+
+```json
+{
+  "id": 2,
+  "latitude": 37.5665,
+  "longitude": 126.978,
+  "status": "REPORTED",
+  "place": "서울특별시 송파구 올림픽로 317",
+  "before_image_urls": [
+    "https://example.com/image1.jpg",
+    "https://example.com/image2.jpg",
+    "https://example.com/image3.jpg"
+  ],
+  "generated_description": [
+    "위험도: 상",
+    "표면 균열 및 파손 발생",
+    "마감재 마모로 인한 내구성 저하",
+    "보행자 발목 위험 존재"
+  ],
+  "created_at": "2025-08-01T23:25:15"
+}
+```
+
+### completed Response
 
 ```json
 {
   "id": 2,
   "latitude": 37.5670,
   "longitude": 126.979,
-  "status": "처리완료",
+  "status": "COMPLETED",
   "place": "서울특별시 중구",
   "before_image_url": [
     "https://example.com/image3.jpg",
@@ -306,11 +325,11 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 ---
 
-## 나의 처리 중인 제보 상세 조회
+## 나의 제보 상세 조회
 
-처리 중인 제보의 상세 정보를 조회하기 위한 API입니다.
+나의 제보의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/v1/manholes/my-reports/processing/{id}
+### **GET** /api/v1/manholes/my-reports/{id}
 
 - id: 제보 ID
 
@@ -318,11 +337,13 @@ presigned URL을 받아 업로드를 위한 API입니다.
 
 - user_description은 nullable합니다.
 
+### Pending Response
+
 ```json
 
 {
   "id": 1,
-  "status": "처리 중",
+  "status": "PENDING",
   "title": "뚜껑 흔들리는 맨홀 제보 요청",
   "created_at": "2023-09-01T12:00:00Z",
   "place": "서울특별시 중구",
@@ -335,41 +356,31 @@ presigned URL을 받아 업로드를 위한 API입니다.
 }
 ```
 
+### Reported Response
+
 ```json
+
 {
-  "id": 4,
-  "status": "접수 전",
-  "title": "맨홀맨홀맨홀.",
-  "created_at": "2025-08-04T16:37:42",
-  "place": "부산광역시 기장군 구연2로 27-5",
-  "before_image_urls": [
+  "id": 1,
+  "status": "REPORTED",
+  "title": "뚜껑 흔들리는 맨홀 제보 요청",
+  "created_at": "2023-09-01T12:00:00Z",
+  "place": "서울특별시 중구",
+  "before_image_url": [
     "https://example.com/image1.jpg",
     "https://example.com/image2.jpg",
     "https://example.com/image3.jpg"
   ],
-  "user_description": null
+  "user_description": "맨홀 뚜껑이 흔들려 보행 시 위험합니다. 조속한 처리 부탁드립니다."
 }
-
 ```
 
----
-
-## 나의 처리 완료된 제보 상세 조회
-
-처리 완료된 제보의 상세 정보를 조회하기 위한 API입니다.
-
-### **GET** /api/v1/manholes/my-reports/completed/{id}
-
-- id: 제보 ID
-
-### Response
-
-- user_description은 nullable합니다.
+### Completed Response
 
 ```json
 {
   "id": 2,
-  "status": "완료",
+  "status": "COMPLETED",
   "title": "파손된 맨홀 뚜껑 교체 요청",
   "created_at": "2023-09-02T12:00:00Z",
   "place": "서울특별시 중구",

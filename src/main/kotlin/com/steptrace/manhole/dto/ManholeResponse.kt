@@ -30,7 +30,7 @@ interface ManholeResponse {
     val createdAt: LocalDateTime
 }
 
-data class ProcessingManholeResponse(
+data class PendingManholeResponse(
         override val id: Long,
         override val latitude: Double,
         override val longitude: Double,
@@ -41,8 +41,34 @@ data class ProcessingManholeResponse(
         val generatedDescription: List<String>
 ): ManholeResponse {
     companion object {
-        fun from(dto: ManholeDto): ProcessingManholeResponse = with(dto) {
-            ProcessingManholeResponse(
+        fun from(dto: ManholeDto): PendingManholeResponse = with(dto) {
+            PendingManholeResponse(
+                    id = id!!,
+                    latitude = latitude,
+                    longitude = longitude,
+                    status = status.name,
+                    place = place,
+                    beforeImageUrls = beforeImageUrls,
+                    generatedDescription = generatedDescription,
+                    createdAt = createdAt!!
+            )
+        }
+    }
+}
+
+data class ReportedManholeResponse(
+        override val id: Long,
+        override val latitude: Double,
+        override val longitude: Double,
+        override val status: String,
+        override val place: String,
+        override val beforeImageUrls: List<String>,
+        override val createdAt: LocalDateTime,
+        val generatedDescription: List<String>
+): ManholeResponse {
+    companion object {
+        fun from(dto: ManholeDto): ReportedManholeResponse = with(dto) {
+            ReportedManholeResponse(
                     id = id!!,
                     latitude = latitude,
                     longitude = longitude,
@@ -102,18 +128,28 @@ data class ManholesFromMyReportResponse(
     }
 }
 
-data class ProcessingManholesFromMyReportResponse(
-        val id: Long,
-        val status: String,
-        val title: String,
-        val createdAt: LocalDateTime,
-        val place: String,
-        val beforeImageUrls: List<String>,
-        val userDescription: String?
-) {
+interface ManholeFromMyReportResponse {
+    val id: Long
+    val status: String
+    val title: String
+    val place: String
+    val beforeImageUrls: List<String>
+    val userDescription: String?
+    val createdAt: LocalDateTime
+}
+
+data class PendingManholeFromMyReportResponse(
+        override val id: Long,
+        override val status: String,
+        override val title: String,
+        override val createdAt: LocalDateTime,
+        override val place: String,
+        override val beforeImageUrls: List<String>,
+        override val userDescription: String?
+): ManholeFromMyReportResponse {
     companion object {
-        fun from(dto: ManholeDto): ProcessingManholesFromMyReportResponse = with(dto) {
-            ProcessingManholesFromMyReportResponse(
+        fun from(dto: ManholeDto): PendingManholeFromMyReportResponse = with(dto) {
+            PendingManholeFromMyReportResponse(
                     id = id!!,
                     status = status.name,
                     title = title,
@@ -126,19 +162,43 @@ data class ProcessingManholesFromMyReportResponse(
     }
 }
 
-data class CompletedManholesFromMyReportResponse(
-        val id: Long,
-        val status: String,
-        val title: String,
-        val createdAt: LocalDateTime,
-        val place: String,
-        val beforeImageUrls: List<String>,
-        val afterImageUrls: List<String>,
-        val userDescription: String?
-) {
+data class ReportedManholeFromMyReportResponse(
+        override val id: Long,
+        override val status: String,
+        override val title: String,
+        override val createdAt: LocalDateTime,
+        override val place: String,
+        override val beforeImageUrls: List<String>,
+        override val userDescription: String?
+): ManholeFromMyReportResponse {
     companion object {
-        fun from(dto: ManholeDto): CompletedManholesFromMyReportResponse = with(dto) {
-            CompletedManholesFromMyReportResponse(
+        fun from(dto: ManholeDto): ReportedManholeFromMyReportResponse = with(dto) {
+            ReportedManholeFromMyReportResponse(
+                    id = id!!,
+                    status = status.name,
+                    title = title,
+                    createdAt = createdAt!!,
+                    place = place,
+                    beforeImageUrls = beforeImageUrls,
+                    userDescription = userDescription
+            )
+        }
+    }
+}
+
+data class CompletedManholeFromMyReportResponse(
+        override val id: Long,
+        override val status: String,
+        override val title: String,
+        override val createdAt: LocalDateTime,
+        override val place: String,
+        override val beforeImageUrls: List<String>,
+        override val userDescription: String?,
+        val afterImageUrls: List<String>
+): ManholeFromMyReportResponse {
+    companion object {
+        fun from(dto: ManholeDto): CompletedManholeFromMyReportResponse = with(dto) {
+            CompletedManholeFromMyReportResponse(
                     id = id!!,
                     status = status.name,
                     title = title,

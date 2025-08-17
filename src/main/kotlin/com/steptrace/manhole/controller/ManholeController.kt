@@ -1,7 +1,7 @@
 package com.steptrace.manhole.controller
 
 import com.steptrace.config.security.CustomUserDetails
-import com.steptrace.manhole.code.ManholeResponseType
+import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.*
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
 import com.steptrace.manhole.service.ManholeService
@@ -24,22 +24,17 @@ class ManholeController(
         }
     }
 
-    @GetMapping("/v1/manholes/{status}/{id}")
+    @GetMapping("/v1/manholes/{id}")
     fun processingManhole(
-            @PathVariable status: String,
             @PathVariable id: Long
     ) : ManholeResponse {
-        return when(ManholeResponseType.fromValue(status)) {
-            ManholeResponseType.PROCESSING -> ProcessingManholeResponse.from(manholeService.getManholeWithAttachment(id))
-            ManholeResponseType.COMPLETED -> CompletedManholeResponse.from(manholeService.getManholeWithAttachment(id))
-        }
-    }
+        val manhole = manholeService.getManholeWithAttachment(id)
 
-    @GetMapping("/v1/manholes/completed/{id}")
-    fun completedManhole(
-            @PathVariable id: Long
-    ) : CompletedManholeResponse {
-        return CompletedManholeResponse.from(manholeService.getManholeWithAttachment(id))
+        return when(manhole.status) {
+            ProcessStatus.PENDING -> PendingManholeResponse.from(manholeService.getManholeWithAttachment(id))
+            ProcessStatus.REPORTED -> ReportedManholeResponse.from(manholeService.getManholeWithAttachment(id))
+            ProcessStatus.COMPLETED -> CompletedManholeResponse.from(manholeService.getManholeWithAttachment(id))
+        }
     }
 
     @PostMapping("/v1/manholes")
@@ -66,18 +61,17 @@ class ManholeController(
                 .map { ManholesFromMyReportResponse.from(it) }
     }
 
-    @GetMapping("/v1/manholes/my-reports/processing/{id}")
+    @GetMapping("/v1/manholes/my-reports/{id}")
     fun myReportProcessingManhole(
             @PathVariable id: Long
-    ) : ProcessingManholesFromMyReportResponse {
-        return ProcessingManholesFromMyReportResponse.from(manholeService.getManholeWithAttachment(id))
-    }
+    ) : ManholeFromMyReportResponse {
+        val manhole = manholeService.getManholeWithAttachment(id)
 
-    @GetMapping("/v1/manholes/my-reports/completed/{id}")
-    fun myReportCompletedManhole(
-            @PathVariable id: Long
-    ) : CompletedManholesFromMyReportResponse {
-        return CompletedManholesFromMyReportResponse.from(manholeService.getManholeWithAttachment(id))
+        return when(manhole.status) {
+            ProcessStatus.PENDING -> PendingManholeFromMyReportResponse.from(manhole)
+            ProcessStatus.REPORTED -> ReportedManholeFromMyReportResponse.from(manhole)
+            ProcessStatus.COMPLETED -> CompletedManholeFromMyReportResponse.from(manhole)
+        }
     }
 
     @GetMapping("/v1/manholes/push/fcm/")
