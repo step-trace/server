@@ -2,7 +2,7 @@ package com.steptrace.auth.service
 
 import com.steptrace.auth.OidcDecodePayload
 import com.steptrace.auth.dto.TokenDto
-import com.steptrace.auth.dto.TokenResponse
+import com.steptrace.auth.dto.LoginResponse
 import com.steptrace.auth.dto.UserInfoDto
 import com.steptrace.auth.dto.google.GoogleTokenDto
 import com.steptrace.auth.dto.kakao.KakaoTokenDto
@@ -54,7 +54,7 @@ class AuthService(
         )
     }
 
-    fun isKakaoUserRegistered(tokenDto: TokenDto): TokenResponse {
+    fun isKakaoUserRegistered(tokenDto: TokenDto): LoginResponse {
         val oidcDecodePayload = oauthOidcHelper.getKakaoOIDCDecodePayload(tokenDto.idToken)
         val kakaoUserInfoDto = getKakaoUserInfo(tokenDto)
 
@@ -62,10 +62,10 @@ class AuthService(
             saveUserAccount(kakaoUserInfoDto)
         }
 
-        return TokenResponse.from(jwtTokenProvider.create(kakaoUserInfoDto))
+        return LoginResponse.of(jwtTokenProvider.create(kakaoUserInfoDto), kakaoUserInfoDto)
     }
 
-    fun isGoogleUserRegistered(tokenDto: TokenDto): TokenResponse {
+    fun isGoogleUserRegistered(tokenDto: TokenDto): LoginResponse {
         val oidcDecodePayload = oauthOidcHelper.getGoogleOidcDecodePayload(tokenDto.idToken)
         val googleUserInfoDto = getGoogleUserInfo(tokenDto)
 
@@ -73,7 +73,7 @@ class AuthService(
             saveUserAccount(googleUserInfoDto)
         }
 
-        return TokenResponse.from(jwtTokenProvider.create(googleUserInfoDto))
+        return LoginResponse.of(jwtTokenProvider.create(googleUserInfoDto), googleUserInfoDto)
     }
 
     fun deleteUserAccount(sub: String) {

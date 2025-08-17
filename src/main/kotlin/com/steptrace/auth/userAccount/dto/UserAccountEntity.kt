@@ -22,6 +22,9 @@ data class UserAccountEntity(
         @Column(name = "name")
         val name: String? = null,
 
+        @Column(name = "picture")
+        val picture: String,
+
         @Column(name = "account_email")
         val accountEmail: String? = null,
 
@@ -37,6 +40,7 @@ data class UserAccountEntity(
                 UserAccountEntity(
                         profileNickname = profileNickname,
                         name = name,
+                        picture = picture,
                         accountEmail = accountEmail,
                         sub = sub,
                         memo = memo

@@ -4,8 +4,8 @@ interface UserInfoDto {
     val sub: String
     val name: String?
     val nickname: String?
-    val profileImage: String?
-    val email: String?
+    val picture: String
+    val email: String
     val emailVerified: Boolean?
     val gender: String?
     val birthdate: String?

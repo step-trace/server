@@ -1,7 +1,7 @@
 package com.steptrace.auth.controller
 
 import com.steptrace.auth.dto.TokenDto
-import com.steptrace.auth.dto.TokenResponse
+import com.steptrace.auth.dto.LoginResponse
 import com.steptrace.auth.service.AuthService
 import com.steptrace.config.security.CustomUserDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -15,14 +15,14 @@ class AuthController(
     @PostMapping("/v1/kakao")
     fun kakaoLogin(
             @RequestBody tokenDto: TokenDto
-    ): TokenResponse {
+    ): LoginResponse {
         return authService.isKakaoUserRegistered(tokenDto)
     }
 
     @PostMapping("/v1/google")
     fun googleLogin(
             @RequestBody tokenDto: TokenDto
-    ): TokenResponse {
+    ): LoginResponse {
         return authService.isGoogleUserRegistered(tokenDto)
     }
 

@@ -3,6 +3,7 @@ package com.steptrace.auth.controller
 import com.steptrace.auth.dto.kakao.KakaoTokenDto
 import com.steptrace.auth.service.AuthService
 import com.steptrace.config.security.CustomUserDetails
+import com.steptrace.support.token.google.GoogleProperties
 import com.steptrace.support.token.kakao.KakaoProperties
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
