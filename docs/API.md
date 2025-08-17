@@ -507,8 +507,17 @@ true
 현 위치 주변 위험 맨홀 확인 후 FCM을 보내는 API입니다.
 가중치는 0.001로 설정했습니다.
 
-### **GET** /api/v1/manholes/push/fcm?latitude={latitude}&longitude={longitude}&token={fcmToken}
+### **POST** /api/v1/manholes/push/fcm
 
+### Request
+
+```json
+{
+  "latitude": 37.5665,
+  "longitude": 126.978,
+  "token": "sdfsadfsdsadf"
+}
+```
 - latitude: 위도
 - longitude: 경도
 - token: FCM token

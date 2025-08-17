@@ -74,12 +74,10 @@ class ManholeController(
         }
     }
 
-    @GetMapping("/v1/manholes/push/fcm")
+    @PostMapping("/v1/manholes/push/fcm")
     fun pushFcm(
-            @RequestParam latitude: Double,
-            @RequestParam longitude: Double,
-            @RequestParam token: String
+            @RequestBody pushRequest: PushRequest
     ) {
-        manholeService.pushFcm(latitude, longitude, token)
+        manholeService.pushFcm(pushRequest)
     }
 }

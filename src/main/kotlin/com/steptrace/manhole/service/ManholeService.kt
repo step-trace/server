@@ -4,6 +4,7 @@ import com.steptrace.exception.EntityNotFoundException
 import com.steptrace.exception.ManholeStatusException
 import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeDto
+import com.steptrace.manhole.dto.PushRequest
 import com.steptrace.manhole.mapper.ManholeMapper.toEntity
 import com.steptrace.manhole.repository.ManholeRepository
 import com.steptrace.push.dto.FcmDto
@@ -51,11 +52,11 @@ class ManholeService(
     }
 
     @Transactional(readOnly = true)
-    fun pushFcm(latitude: Double, longitude: Double, token: String) {
-        val nearByDangerManhole = getNearbyManholes(latitude, longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
+    fun pushFcm(pushRequest: PushRequest) {
+        val nearByDangerManhole = getNearbyManholes(pushRequest.latitude, pushRequest.longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
 
         if (nearByDangerManhole.isNotEmpty()) {
-            pushService.pushFcm(FcmDto.from(token))
+            pushService.pushFcm(FcmDto.from(pushRequest.token))
         }
     }
 

@@ -14,3 +14,9 @@ data class ManholeRequest(
         require(generatedDescription.isNotEmpty()) { "Generated description은 빈 값일 수 없습니다." }
     }
 }
+
+data class PushRequest(
+        val latitude: Double,
+        val longitude: Double,
+        val token: String
+)
