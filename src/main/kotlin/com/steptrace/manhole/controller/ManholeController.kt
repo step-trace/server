@@ -1,13 +1,8 @@
 package com.steptrace.manhole.controller
 
 import com.steptrace.config.security.CustomUserDetails
-import com.steptrace.manhole.dto.CompletedManholeResponse
-import com.steptrace.manhole.dto.ManholeRequest
-import com.steptrace.manhole.dto.ManholesFromMyReportResponse
-import com.steptrace.manhole.dto.ProcessingManholeResponse
-import com.steptrace.manhole.dto.ProcessingManholesFromMyReportResponse
-import com.steptrace.manhole.dto.CompletedManholesFromMyReportResponse
-import com.steptrace.manhole.dto.ManholeMakerResponse
+import com.steptrace.manhole.code.ManholeResponseType
+import com.steptrace.manhole.dto.*
 import com.steptrace.manhole.mapper.ManholeMapper.toDto
 import com.steptrace.manhole.service.ManholeService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -29,12 +24,15 @@ class ManholeController(
         }
     }
 
-
-    @GetMapping("/v1/manholes/processing/{id}")
+    @GetMapping("/v1/manholes/{status}/{id}")
     fun processingManhole(
+            @PathVariable status: String,
             @PathVariable id: Long
-    ) : ProcessingManholeResponse {
-        return ProcessingManholeResponse.from(manholeService.getManholeWithAttachment(id))
+    ) : ManholeResponse {
+        return when(ManholeResponseType.fromValue(status)) {
+            ManholeResponseType.PROCESSING -> ProcessingManholeResponse.from(manholeService.getManholeWithAttachment(id))
+            ManholeResponseType.COMPLETED -> CompletedManholeResponse.from(manholeService.getManholeWithAttachment(id))
+        }
     }
 
     @GetMapping("/v1/manholes/completed/{id}")

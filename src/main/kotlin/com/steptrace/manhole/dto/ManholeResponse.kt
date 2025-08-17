@@ -20,16 +20,26 @@ data class ManholeMakerResponse(
     }
 }
 
+interface ManholeResponse {
+    val id: Long
+    val latitude: Double
+    val longitude: Double
+    val status: String
+    val place: String
+    val beforeImageUrls: List<String>
+    val createdAt: LocalDateTime
+}
+
 data class ProcessingManholeResponse(
-        val id: Long,
-        val latitude: Double,
-        val longitude: Double,
-        val status: String,
-        val place: String,
-        val beforeImageUrls: List<String>,
-        val generatedDescription: List<String>,
-        val createdAt: LocalDateTime
-) {
+        override val id: Long,
+        override val latitude: Double,
+        override val longitude: Double,
+        override val status: String,
+        override val place: String,
+        override val beforeImageUrls: List<String>,
+        override val createdAt: LocalDateTime,
+        val generatedDescription: List<String>
+): ManholeResponse {
     companion object {
         fun from(dto: ManholeDto): ProcessingManholeResponse = with(dto) {
             ProcessingManholeResponse(
@@ -47,16 +57,15 @@ data class ProcessingManholeResponse(
 }
 
 data class CompletedManholeResponse(
-        val id: Long,
-        val latitude: Double,
-        val longitude: Double,
-        val status: String,
-        val place: String,
-        val beforeImageUrls: List<String>,
-        val afterImageUrls: List<String>,
-        val processDescription: String,
-        val createdAt: LocalDateTime
-) {
+        override val id: Long,
+        override val latitude: Double,
+        override val longitude: Double,
+        override val status: String,
+        override val place: String,
+        override val beforeImageUrls: List<String>,
+        override val createdAt: LocalDateTime,
+        val afterImageUrls: List<String>
+): ManholeResponse {
     companion object {
         fun from(dto: ManholeDto): CompletedManholeResponse = with(dto) {
             CompletedManholeResponse(
@@ -67,7 +76,6 @@ data class CompletedManholeResponse(
                     place = place,
                     beforeImageUrls = beforeImageUrls,
                     afterImageUrls = afterImageUrls!!,
-                    processDescription = processDescription!!,
                     createdAt = createdAt!!
             )
         }

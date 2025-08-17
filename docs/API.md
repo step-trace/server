@@ -111,11 +111,17 @@
 
 처리 중인 맨홀의 상세 정보를 조회하기 위한 API입니다.
 
-### **GET** /api/v1/manholes/processing/{id}
+### **GET** /api/v1/manholes/{status}/{id}
 
+- status: 맨홀 응답 타입
+  - processing
+  - completed
+  - 위 두 타입을 제외한 요청 시 예외 발생
 - id: 맨홀 ID
 
 ### Response
+
+### processing type
 
 ```json
 {
@@ -136,6 +142,27 @@
     "보행자 발목 위험 존재"
   ],
   "created_at": "2025-08-01T23:25:15"
+}
+```
+
+### completed type
+
+```json
+{
+  "id": 2,
+  "latitude": 37.5670,
+  "longitude": 126.979,
+  "status": "처리완료",
+  "place": "서울특별시 중구",
+  "before_image_url": [
+    "https://example.com/image3.jpg",
+    "https://example.com/image4.jpg"
+  ],
+  "after_image_url": [
+    "https://example.com/image5.jpg",
+    "https://example.com/image6.jpg"
+  ],
+  "created_at": "2023-09-02T12:00:00Z"
 }
 ```
 

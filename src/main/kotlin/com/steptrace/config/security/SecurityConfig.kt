@@ -53,8 +53,11 @@ class SecurityConfig(
                 .headers { headers -> headers.frameOptions { it.sameOrigin() } }
 
         http.authorizeHttpRequests {
-            it.requestMatchers(HttpMethod.DELETE, "/api/auth/users").authenticated()
-                    .requestMatchers("/auth/**").permitAll() // 테스트 후 삭제 예정
+            it.requestMatchers("/auth/**").permitAll() // 테스트 후 삭제 예정
+                    .requestMatchers(HttpMethod.DELETE, "/api/auth/users").authenticated()
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/v1/manholes").permitAll()
+                    .requestMatchers("/api/v1/manholes/processing", "/api/v1/manholes/completed").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .anyRequest().authenticated()
