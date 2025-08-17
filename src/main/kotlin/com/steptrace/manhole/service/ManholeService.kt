@@ -1,6 +1,6 @@
 package com.steptrace.manhole.service
 
-import com.steptrace.exception.IdNotFoundException
+import com.steptrace.exception.EntityNotFoundException
 import com.steptrace.exception.ManholeStatusException
 import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeDto
@@ -30,7 +30,7 @@ class ManholeService(
     @Transactional
     fun create(manholeDto: ManholeDto) {
         val manholeId = manholeRepository.saveManhole(manholeDto).id
-                ?: throw IdNotFoundException("manhole")
+                ?: throw EntityNotFoundException("manhole")
 
         manholeRepository.saveManholeAttachments(manholeId, manholeDto.beforeImageUrls)
     }

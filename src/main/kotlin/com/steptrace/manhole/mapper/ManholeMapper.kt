@@ -68,7 +68,7 @@ object ManholeMapper {
                 id = id,
                 latitude = latitude,
                 longitude = longitude,
-                status = status.value,
+                status = status.name,
                 title = title,
                 place = place,
                 userDescription = userDescription,

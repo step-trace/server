@@ -1,7 +1,7 @@
 package com.steptrace.manhole.repository
 
 import com.steptrace.annotation.UnitTest
-import com.steptrace.exception.IdNotFoundException
+import com.steptrace.exception.EntityNotFoundException
 import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeAttachmentEntity
 import com.steptrace.manhole.stub.ManholeAttachmentEntityStub.BEFORE_IMAGE_ATTACHMENT
@@ -94,7 +94,7 @@ class ManholeClientTest {
         every { manholeJpaRepository.findById(nonExistentId) } returns Optional.empty()
 
         assertThatThrownBy { manholeClient.loadManholeWithAttachmentById(nonExistentId) }
-            .isInstanceOf(IdNotFoundException::class.java)
+            .isInstanceOf(EntityNotFoundException::class.java)
             .hasMessage("manhole ID not found")
 
         verify(exactly = 1) { manholeJpaRepository.findById(nonExistentId) }
@@ -195,13 +195,13 @@ class ManholeClientTest {
     fun should_modify_manhole_status_successfully() {
         val manholeEntity = DEFAULT_MANHOLE_ENTITY
         val newStatus = ProcessStatus.COMPLETED
-        manholeEntity.status = newStatus.value
+        manholeEntity.status = newStatus.name
 
         every { manholeJpaRepository.save(any()) } returns manholeEntity
 
         manholeClient.modifyManholeStatus(manholeEntity, newStatus)
 
-        assertThat(manholeEntity.status).isEqualTo(newStatus.value)
+        assertThat(manholeEntity.status).isEqualTo(newStatus.name)
         verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
     }
 
@@ -210,13 +210,13 @@ class ManholeClientTest {
     fun should_change_manhole_status_from_in_progress_to_completed() {
         val manholeEntity = DEFAULT_MANHOLE_ENTITY
         val newStatus = ProcessStatus.COMPLETED
-        manholeEntity.status = ProcessStatus.IN_PROGRESS.value
+        manholeEntity.status = ProcessStatus.IN_PROGRESS.name
 
         every { manholeJpaRepository.save(any()) } returns manholeEntity
 
         manholeClient.modifyManholeStatus(manholeEntity, newStatus)
 
-        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.COMPLETED.value)
+        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.COMPLETED.name)
         verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
     }
 
@@ -225,13 +225,13 @@ class ManholeClientTest {
     fun should_change_manhole_status_from_pending_to_in_progress() {
         val manholeEntity = DEFAULT_MANHOLE_ENTITY
         val newStatus = ProcessStatus.IN_PROGRESS
-        manholeEntity.status = ProcessStatus.PENDING.value
+        manholeEntity.status = ProcessStatus.PENDING.name
 
         every { manholeJpaRepository.save(any()) } returns manholeEntity
 
         manholeClient.modifyManholeStatus(manholeEntity, newStatus)
 
-        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.IN_PROGRESS.value)
+        assertThat(manholeEntity.status).isEqualTo(ProcessStatus.IN_PROGRESS.name)
         verify(exactly = 1) { manholeJpaRepository.save(manholeEntity) }
     }
 }

@@ -1,6 +1,6 @@
 package com.steptrace.manhole.repository
 
-import com.steptrace.exception.IdNotFoundException
+import com.steptrace.exception.EntityNotFoundException
 import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeDto
 import com.steptrace.manhole.dto.ManholeEntity
@@ -20,7 +20,7 @@ class ManholeClient(
 
     override fun loadManholeById(id: Long) : ManholeEntity {
         return manholeJpaRepository.findById(id).orElseThrow {
-            IdNotFoundException("manhole")
+            EntityNotFoundException("manhole")
         }
     }
 
@@ -54,7 +54,7 @@ class ManholeClient(
     }
 
     override fun modifyManholeStatus(manholeEntity: ManholeEntity, status: ProcessStatus) {
-        manholeEntity.status = status.value
+        manholeEntity.status = status.name
         manholeJpaRepository.save(manholeEntity)
     }
 

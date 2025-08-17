@@ -1,7 +1,7 @@
 package com.steptrace.manhole.service
 
 import com.steptrace.annotation.UnitTest
-import com.steptrace.exception.IdNotFoundException
+import com.steptrace.exception.EntityNotFoundException
 import com.steptrace.exception.ManholeStatusException
 import com.steptrace.manhole.repository.ManholeRepository
 import com.steptrace.manhole.stub.ManholeDtoStub.BOUNDARY_NORTHEAST_MANHOLE
@@ -133,7 +133,7 @@ internal class ManholeServiceTest {
         every { manholeRepository.saveManhole(manholeDto) } returns MANHOLE_ENTITY_WITH_NULL_ID
 
         assertThatThrownBy { manholeService.create(manholeDto) }
-                .isInstanceOf(IdNotFoundException::class.java)
+                .isInstanceOf(EntityNotFoundException::class.java)
                 .hasMessage("manhole ID not found")
 
         verify(exactly = 1) { manholeRepository.saveManhole(manholeDto) }
