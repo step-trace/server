@@ -4,7 +4,7 @@ import com.steptrace.exception.InvalidProcessStatusException
 
 enum class ProcessStatus {
     PENDING,
-    IN_PROGRESS,
+    REPORTED,
     COMPLETED;
 
     companion object {

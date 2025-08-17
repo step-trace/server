@@ -41,7 +41,7 @@ class ManholeReportScheduler(
 
     private fun modifyManholesStatusToProgress(manholes: List<ManholeDto>) {
         manholes.map { manhole ->
-            manholeRepository.modifyManholeStatus(toEntity(manhole), ProcessStatus.IN_PROGRESS)
+            manholeRepository.modifyManholeStatus(toEntity(manhole), ProcessStatus.REPORTED)
         }
     }
 }
