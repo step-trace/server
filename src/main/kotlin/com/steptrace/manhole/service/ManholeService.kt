@@ -6,20 +6,20 @@ import com.steptrace.manhole.code.ProcessStatus
 import com.steptrace.manhole.dto.ManholeDto
 import com.steptrace.manhole.mapper.ManholeMapper.toEntity
 import com.steptrace.manhole.repository.ManholeRepository
+import com.steptrace.push.dto.FcmDto
+import com.steptrace.push.service.PushService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ManholeService(
-        private val manholeRepository: ManholeRepository
+        private val manholeRepository: ManholeRepository,
+        private val pushService: PushService
 ) {
 
     @Transactional(readOnly = true)
     fun getManholeMarkers(latitude: Double, longitude: Double): List<ManholeDto> {
-        return manholeRepository.loadManholesWithAttachment().filter { manhole ->
-            manhole.latitude in latitude - LAT_SHIFT..latitude + LAT_SHIFT
-                    && manhole.longitude in longitude - LNG_SHIFT..longitude + LNG_SHIFT
-        }
+        return findNearbyManholes(latitude, longitude, LAT_SHIFT, LNG_SHIFT)
     }
 
     @Transactional(readOnly = true)
@@ -50,8 +50,27 @@ class ManholeService(
         return manholeRepository.loadManholesWithAttachmentsBySub(sub)
     }
 
+    @Transactional(readOnly = true)
+    fun pushFcm(latitude: Double, longitude: Double, token: String) {
+        val nearByDangerManhole = findNearbyManholes(latitude, longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
+
+        if (nearByDangerManhole.isNotEmpty()) {
+            pushService.pushFcm(FcmDto.from(token))
+        }
+    }
+
+    private fun findNearbyManholes(latitude: Double, longitude: Double, latShift: Double, lngShift: Double): List<ManholeDto> {
+        return manholeRepository.loadManholesWithAttachment()
+                .filter { manhole ->
+                    manhole.latitude in latitude - latShift..latitude + latShift
+                            && manhole.longitude in longitude - lngShift..longitude + lngShift
+                }
+    }
+
     companion object {
         private const val LAT_SHIFT = 0.01
         private const val LNG_SHIFT = 0.01
+        private const val LAT_SHIFT_FOR_FCM = 0.001
+        private const val LNG_SHIFT_FOR_FCM = 0.001
     }
 }

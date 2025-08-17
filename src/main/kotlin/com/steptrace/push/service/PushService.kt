@@ -3,7 +3,6 @@ package com.steptrace.push.service
 import com.google.auth.oauth2.GoogleCredentials
 import com.steptrace.push.dto.FcmDto
 import com.steptrace.support.fcm.FcmFeignClient
-import org.slf4j.LoggerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 
@@ -12,11 +11,7 @@ class PushService(
         private val fcmFeignClient: FcmFeignClient
 ) {
 
-    private val logger = LoggerFactory.getLogger(PushService::class.java)
-
     fun pushFcm(fcmDto: FcmDto) {
-        logger.info(fcmDto.toString())
-
         fcmFeignClient.pushMessage("Bearer ${getAccessToken()}", fcmDto)
     }
 

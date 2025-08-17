@@ -22,6 +22,7 @@
 - [x] 비정상 맨홀 판단 AI 호출 결과
 - [x] 정상 맨홀 판단 AI 호출 결과
 - [x] FCM 메시지 전송 API
+- [ ] 현 위치 주변 위험 맨홀 확인 API 
 
 ## 카카오 로그인
 
@@ -495,7 +496,7 @@ true
 
 ## FCM 메시지 전송 API
 
-- FCM 메시지를 전송하는 API입니다.
+FCM 메시지를 전송하는 API입니다.
 
 ### **POST** /api/push/v1/fcm
 
@@ -508,3 +509,16 @@ true
   	"body": "hello"
 }
 ```
+
+---
+
+## 현 위치 주변 위험 맨홀 확인 API
+
+현 위치 주변 위험 맨홀 확인 후 FCM을 보내는 API입니다.
+가중치는 0.001로 설정했습니다.
+
+### **GET** /api/v1/manholes/push/fcm?latitude={latitude}&longitude={longitude}&token={fcmToken}
+
+- latitude: 위도
+- longitude: 경도
+- token: FCM token

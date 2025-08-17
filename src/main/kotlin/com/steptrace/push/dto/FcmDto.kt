@@ -4,9 +4,13 @@ data class FcmDto(
         val message: MessageDto
 ) {
     companion object {
-        fun from(request: FcmRequest) = with(request) {
-            FcmDto(
-                    message = MessageDto.from(request)
+        fun from(token: String): FcmDto{
+            return FcmDto(
+                    message = MessageDto.of(
+                            token,
+                            "경고\uFE0F\uD83D\uDEA8",
+                            "발밑 조심! 반경 100m 내에 위험 맨홀이 있어요."
+                    )
             )
         }
     }
@@ -17,10 +21,10 @@ data class MessageDto(
         val notification: NotificationDto
 ) {
     companion object {
-        fun from(request: FcmRequest) = with(request) {
-            MessageDto (
-                    token = request.token,
-                    notification = NotificationDto.of(request.title, request.body)
+        fun of(token: String, title: String, body: String): MessageDto {
+            return MessageDto(
+                    token = token,
+                    notification = NotificationDto.of(title, body)
             )
         }
     }

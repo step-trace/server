@@ -81,4 +81,13 @@ class ManholeController(
     ) : CompletedManholesFromMyReportResponse {
         return CompletedManholesFromMyReportResponse.from(manholeService.getManholeWithAttachment(id))
     }
+
+    @GetMapping("/v1/manholes/push/fcm/")
+    fun pushFcm(
+            @RequestParam latitude: Double,
+            @RequestParam longitude: Double,
+            @RequestParam token: String
+    ) {
+        manholeService.pushFcm(latitude, longitude, token)
+    }
 }
