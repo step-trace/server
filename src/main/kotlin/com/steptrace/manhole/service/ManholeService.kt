@@ -19,7 +19,7 @@ class ManholeService(
 
     @Transactional(readOnly = true)
     fun getManholeMarkers(latitude: Double, longitude: Double): List<ManholeDto> {
-        return findNearbyManholes(latitude, longitude, LAT_SHIFT, LNG_SHIFT)
+        return getNearbyManholes(latitude, longitude, LAT_SHIFT, LNG_SHIFT)
     }
 
     @Transactional(readOnly = true)
@@ -52,14 +52,14 @@ class ManholeService(
 
     @Transactional(readOnly = true)
     fun pushFcm(latitude: Double, longitude: Double, token: String) {
-        val nearByDangerManhole = findNearbyManholes(latitude, longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
+        val nearByDangerManhole = getNearbyManholes(latitude, longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
 
         if (nearByDangerManhole.isNotEmpty()) {
             pushService.pushFcm(FcmDto.from(token))
         }
     }
 
-    private fun findNearbyManholes(latitude: Double, longitude: Double, latShift: Double, lngShift: Double): List<ManholeDto> {
+    private fun getNearbyManholes(latitude: Double, longitude: Double, latShift: Double, lngShift: Double): List<ManholeDto> {
         return manholeRepository.loadManholesWithAttachment()
                 .filter { manhole ->
                     manhole.latitude in latitude - latShift..latitude + latShift
