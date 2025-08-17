@@ -1,9 +1,11 @@
 package com.steptrace.ai.service
 
 import com.steptrace.exception.AiResponseGenerateException
+import com.steptrace.exception.BadRequestToAiException
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.prompt.PromptTemplate
 import org.springframework.ai.content.Media
+import org.springframework.ai.retry.NonTransientAiException
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
@@ -23,6 +25,7 @@ class AiService(
         @Qualifier("anthropicChatClient")
         private val anthropicClient: ChatClient,
 ) {
+
     fun analyzeAbnormalManholeImages(mediaList: List<Media>): String? {
         return analyzeManholeImages(
                 mediaList = mediaList,
@@ -48,9 +51,12 @@ class AiService(
                 "false" -> "false"
                 else -> evaluateRiskLevel(mediaList, riskAssessmentPromptResource)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            throw AiResponseGenerateException()
+        }
+        catch (e: NonTransientAiException) {
+            throw BadRequestToAiException(e)
+        }
+        catch (e: Exception) {
+            throw AiResponseGenerateException(e)
         }
     }
 
