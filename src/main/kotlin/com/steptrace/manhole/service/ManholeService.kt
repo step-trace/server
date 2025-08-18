@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
+import kotlin.math.abs
 
 @Service
 class ManholeService(
@@ -58,12 +59,20 @@ class ManholeService(
     fun pushFcm(pushRequest: PushRequest) {
         val cacheKey = "fcm_token:${pushRequest.token}"
 
-        if (redisTemplate.hasKey(cacheKey)) {
-            return
+        val cachedLocation = redisTemplate.opsForValue().get(cacheKey)
+        if (cachedLocation != null) {
+            val (cachedLat, cachedLng) = cachedLocation.split(",").map { it.toDouble() }
+            val latDiff = abs(pushRequest.latitude - cachedLat)
+            val lngDiff = abs(pushRequest.longitude - cachedLng)
+
+            if (latDiff <= LAT_SHIFT_FOR_FCM && lngDiff <= LNG_SHIFT_FOR_FCM) {
+                return
+            }
         }
 
-        redisTemplate.opsForValue().set(cacheKey, "sent", Duration.ofMinutes(10))
-        
+        val locationValue = "${pushRequest.latitude},${pushRequest.longitude}"
+        redisTemplate.opsForValue().set(cacheKey, locationValue)
+
         val nearByDangerManhole = getNearbyManholes(pushRequest.latitude, pushRequest.longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
 
         if (nearByDangerManhole.isNotEmpty()) {
