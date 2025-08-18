@@ -58,6 +58,7 @@ class SecurityConfig(
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/v1/manholes").permitAll()
                     .requestMatchers("/api/v1/manholes/*").permitAll()
+                    .requestMatchers("/v1/manholes/push/fcm").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .anyRequest().authenticated()
