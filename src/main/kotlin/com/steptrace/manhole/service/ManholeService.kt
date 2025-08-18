@@ -9,13 +9,16 @@ import com.steptrace.manhole.mapper.ManholeMapper.toEntity
 import com.steptrace.manhole.repository.ManholeRepository
 import com.steptrace.push.dto.FcmDto
 import com.steptrace.push.service.PushService
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Duration
 
 @Service
 class ManholeService(
         private val manholeRepository: ManholeRepository,
-        private val pushService: PushService
+        private val pushService: PushService,
+        private val redisTemplate: RedisTemplate<String, String>
 ) {
 
     @Transactional(readOnly = true)
@@ -53,6 +56,14 @@ class ManholeService(
 
     @Transactional(readOnly = true)
     fun pushFcm(pushRequest: PushRequest) {
+        val cacheKey = "fcm_token:${pushRequest.token}"
+
+        if (redisTemplate.hasKey(cacheKey)) {
+            return
+        }
+
+        redisTemplate.opsForValue().set(cacheKey, "sent", Duration.ofMinutes(10))
+        
         val nearByDangerManhole = getNearbyManholes(pushRequest.latitude, pushRequest.longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
 
         if (nearByDangerManhole.isNotEmpty()) {
