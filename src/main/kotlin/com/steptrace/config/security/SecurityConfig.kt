@@ -57,7 +57,7 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.DELETE, "/api/auth/users").authenticated()
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/v1/manholes").permitAll()
-                    .requestMatchers("/api/v1/manholes/processing", "/api/v1/manholes/completed").permitAll()
+                    .requestMatchers("/api/v1/manholes/*").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error/**").permitAll()
                     .anyRequest().authenticated()
