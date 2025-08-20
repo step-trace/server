@@ -27,7 +27,7 @@ StepTrace는 **Anthropic Claude AI**를 활용하여 위험한 맨홀을 자동�
 - **자동 리포트 생성**: 일일 Excel/HTML 리포트 자동 생성
 - **OAuth 2.0 인증**: Google, Kakao 소셜 로그인 지원
 
-## 🏗️ 시스템 아키텍처
+## 🏗️ 시스템 구조
 
 ```
 📦src
