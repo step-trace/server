@@ -259,6 +259,8 @@ KAKAO_CLIENT_ID=your_kakao_client_id
 
 ## 📡 API 엔드포인트
 
+> 📋 **전체 API 문서**: [API.md](https://github.com/step-trace/server/blob/main/docs/API.md)
+
 ### 맨홀 관리
 | Method | Endpoint | Description |
 |--------|----------|-------------|
