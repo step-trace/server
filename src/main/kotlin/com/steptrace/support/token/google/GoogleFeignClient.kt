@@ -1,7 +1,6 @@
 package com.steptrace.support.token.google
 
 import com.steptrace.auth.OidcPublicKeysResponse
-import com.steptrace.auth.dto.google.GoogleTokenDto
 import com.steptrace.auth.dto.google.GoogleUserInfoDto
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cloud.openfeign.FeignClient
