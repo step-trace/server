@@ -5,27 +5,7 @@ import com.steptrace.auth.dto.google.GoogleUserInfoDto
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestParam
-
-@FeignClient(
-        name = "GoogleOauthClient",
-        url = "\${feign.client.google.token-url}"
-)
-interface GoogleOauthClient {
-    @Deprecated("테스트 후 삭제 예정")
-    @PostMapping(
-            "/token",
-            consumes = ["application/x-www-form-urlencoded"])
-    fun getGoogleToken(
-            @RequestParam("code") code: String,
-            @RequestParam("client_id") clientId: String,
-            @RequestParam("client_secret") clientSecret: String,
-            @RequestParam("redirect_uri") redirectUri: String,
-            @RequestParam("grant_type") grantType: String
-    ): GoogleTokenDto
-}
 
 @FeignClient(
         name = "GoogleOIDCClient",
