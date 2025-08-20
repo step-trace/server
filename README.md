@@ -25,6 +25,105 @@ StepTrace는 **Anthropic Claude AI**를 활용하여 위험한 맨홀을 자동�
 - **자동 리포트 생성**: 일일 Excel/HTML 리포트 자동 생성
 - **OAuth 2.0 인증**: Google, Kakao 소셜 로그인 지원
 
+## 🚀 주요 기능
+
+### 1. 맨홀 신고 및 관리
+- 모바일 앱을 통한 간편한 맨홀 신고
+- 이전/이후 상태 이미지 비교
+- GPS 좌표 기반 정확한 위치 정보
+- PENDING → REPORTED → COMPLETED 워크플로우
+
+### 2. AI 기반 이미지 분석
+- **2단계 프롬프트 검증**: 유효성 검증 → 위험도 상세 분석
+- **93.1% 정확도**: 기존 단일 프롬프트 대비 5.8% 향상
+- **거짓 양성률 68% 감소**: 비맨홀 객체 오판 대폭 감소
+- **실시간 분석**: 평균 3.8초 내 분석 완료
+
+### 3. 실시간 안전 알림
+- 100m 반경 내 위험 맨홀 감지 시 즉시 푸시 알림
+- Redis 캐싱을 통한 중복 알림 방지
+- 3초 이내 실시간 알림 전송
+
+### 4. 자동화된 리포트 시스템
+- 매일 자정 자동 리포트 생성
+- Excel, HTML 형식 지원
+- ☁AWS S3 자동 업로드
+
+## 🛠️ 기술 스택
+
+### Backend
+- 언어: Kotlin 1.9+
+- 프레임워크: Spring Boot 3.2+, Spring Security, Spring Data JPA
+- AI: Spring AI + Anthropic Claude API
+- 데이터베이스: MySQL 8.0, Redis 7.0
+- 클라우드: AWS (S3, EC2)
+- 푸시 알림: Firebase Cloud Messaging (FCM)
+- 빌드 도구: Gradle
+
+### Infra
+- Docker, AWS EC2
+- Firebase Admin SDK
+- OAuth 2.0/OIDC (Google, Kakao)
+
+## 📦 설치 및 실행
+
+### 1. 저장소 클론
+```bash
+git clone https://github.com/your-username/step-trace.git
+cd step-trace
+```
+
+### 2. 환경 변수 설정
+```bash
+# .env 파일 생성
+cp .env.example .env
+
+# 필요한 API 키 설정
+CLAUDE_API_KEY=your_claude_api_key
+FIREBASE_CONFIG_PATH=path_to_firebase_config
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+GOOGLE_CLIENT_ID=your_google_client_id
+KAKAO_CLIENT_ID=your_kakao_client_id
+```
+
+### 3. 데이터베이스 실행
+
+### 4. 애플리케이션 실행
+
+## 📡 API 엔드포인트
+
+> 📋 **전체 API 문서**: [API.md](https://github.com/step-trace/server/blob/main/docs/API.md)
+
+### 맨홀 관리
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/manholes` | 주변 맨홀 마커 조회 |
+| GET | `/api/v1/manholes/{id}` | 맨홀 상세 정보 조회 |
+| POST | `/api/v1/manholes` | 새 맨홀 신고 |
+| POST | `/api/v1/manholes/completed/images/{id}` | 완료 이미지 등록 |
+| GET | `/api/v1/manholes/my-reports` | 내 신고 내역 조회 |
+
+### AI 이미지 분석
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/ai/abnormal-manhole/image` | 비정상 맨홀 분석 |
+| POST | `/api/v1/ai/normal-manhole/image` | 정상 맨홀 검증 |
+
+### 인증
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/v1/google` | Google OAuth 로그인 |
+| POST | `/api/auth/v1/kakao` | Kakao OAuth 로그인 |
+| DELETE | `/api/auth/users` | 사용자 계정 삭제 |
+
+### 푸시 알림
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/v1/manholes/push/fcm` | 위치 기반 FCM 알림 |
+
+---
+
 ## 🏗️ 시스템 구조
 
 ```
@@ -188,105 +287,6 @@ StepTrace는 **Anthropic Claude AI**를 활용하여 위험한 맨홀을 자동�
  ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ManholeEntityStub.kt
  ┃ ┃ ┃ ┃ ┗ 📜StepTraceApplicationTests.kt
 ```
-
-## 🚀 주요 기능
-
-### 1. 맨홀 신고 및 관리
-- 모바일 앱을 통한 간편한 맨홀 신고
-- 이전/이후 상태 이미지 비교
-- GPS 좌표 기반 정확한 위치 정보
-- PENDING → REPORTED → COMPLETED 워크플로우
-
-### 2. AI 기반 이미지 분석
-- **2단계 프롬프트 검증**: 유효성 검증 → 위험도 상세 분석
-- **93.1% 정확도**: 기존 단일 프롬프트 대비 5.8% 향상
-- **거짓 양성률 68% 감소**: 비맨홀 객체 오판 대폭 감소
-- **실시간 분석**: 평균 3.8초 내 분석 완료
-
-### 3. 실시간 안전 알림
-- 100m 반경 내 위험 맨홀 감지 시 즉시 푸시 알림
-- Redis 캐싱을 통한 중복 알림 방지
-- 3초 이내 실시간 알림 전송
-
-### 4. 자동화된 리포트 시스템
-- 매일 자정 자동 리포트 생성
-- Excel, HTML 형식 지원
-- ☁AWS S3 자동 업로드
-
-## 🛠️ 기술 스택
-
-### Backend
-- 언어: Kotlin 1.9+
-- 프레임워크: Spring Boot 3.2+, Spring Security, Spring Data JPA
-- AI: Spring AI + Anthropic Claude API
-- 데이터베이스: MySQL 8.0, Redis 7.0
-- 클라우드: AWS (S3, EC2)
-- 푸시 알림: Firebase Cloud Messaging (FCM)
-- 빌드 도구: Gradle
-
-### Infra
-- Docker, AWS EC2
-- Firebase Admin SDK
-- OAuth 2.0/OIDC (Google, Kakao)
-
-## 📦 설치 및 실행
-
-### 1. 저장소 클론
-```bash
-git clone https://github.com/your-username/step-trace.git
-cd step-trace
-```
-
-### 2. 환경 변수 설정
-```bash
-# .env 파일 생성
-cp .env.example .env
-
-# 필요한 API 키 설정
-CLAUDE_API_KEY=your_claude_api_key
-FIREBASE_CONFIG_PATH=path_to_firebase_config
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret_key
-GOOGLE_CLIENT_ID=your_google_client_id
-KAKAO_CLIENT_ID=your_kakao_client_id
-```
-
-### 3. 데이터베이스 실행
-
-### 4. 애플리케이션 실행
-
-## 📡 API 엔드포인트
-
-> 📋 **전체 API 문서**: [API.md](https://github.com/step-trace/server/blob/main/docs/API.md)
-
-### 맨홀 관리
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/manholes` | 주변 맨홀 마커 조회 |
-| GET | `/api/v1/manholes/{id}` | 맨홀 상세 정보 조회 |
-| POST | `/api/v1/manholes` | 새 맨홀 신고 |
-| POST | `/api/v1/manholes/completed/images/{id}` | 완료 이미지 등록 |
-| GET | `/api/v1/manholes/my-reports` | 내 신고 내역 조회 |
-
-### AI 이미지 분석
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/ai/abnormal-manhole/image` | 비정상 맨홀 분석 |
-| POST | `/api/v1/ai/normal-manhole/image` | 정상 맨홀 검증 |
-
-### 인증
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/v1/google` | Google OAuth 로그인 |
-| POST | `/api/auth/v1/kakao` | Kakao OAuth 로그인 |
-| DELETE | `/api/auth/users` | 사용자 계정 삭제 |
-
-### 푸시 알림
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/manholes/push/fcm` | 위치 기반 FCM 알림 |
-
----
 
 <div align="center">
   
