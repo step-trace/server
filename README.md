@@ -1,8 +1,6 @@
 # 🚧 StepTrace - AI 기반 위험 맨홀 추적 및 관리 시스템
 
 <div align="center">
-  
-![StepTrace Logo](https://via.placeholder.com/400x200/4285f4/ffffff?text=StepTrace)
 
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2+-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org/)
@@ -27,9 +25,9 @@ StepTrace는 **Anthropic Claude AI**를 활용하여 위험한 맨홀을 자동�
 - **자동 리포트 생성**: 일일 Excel/HTML 리포트 자동 생성
 - **OAuth 2.0 인증**: Google, Kakao 소셜 로그인 지원
 
-## 🏗️ 시스템 아키텍처
+## 🏗️ 시스템 구조
 
-```mermaid
+```
 📦src
  ┣ 📂main
  ┃ ┣ 📂kotlin
