@@ -12,7 +12,6 @@ import com.steptrace.push.service.PushService
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Duration
 import kotlin.math.abs
 
 @Service
@@ -57,27 +56,53 @@ class ManholeService(
 
     @Transactional(readOnly = true)
     fun pushFcm(pushRequest: PushRequest) {
-        val cacheKey = "fcm_token:${pushRequest.token}"
-
-        val cachedLocation = redisTemplate.opsForValue().get(cacheKey)
-        if (cachedLocation != null) {
-            val (cachedLat, cachedLng) = cachedLocation.split(",").map { it.toDouble() }
-            val latDiff = abs(pushRequest.latitude - cachedLat)
-            val lngDiff = abs(pushRequest.longitude - cachedLng)
-
-            if (latDiff <= LAT_SHIFT_FOR_FCM && lngDiff <= LNG_SHIFT_FOR_FCM) {
-                return
-            }
+        if (!shouldSendPushNotification(pushRequest)) {
+            return
         }
 
-        val locationValue = "${pushRequest.latitude},${pushRequest.longitude}"
-        redisTemplate.opsForValue().set(cacheKey, locationValue)
+        updateLocationCache(pushRequest)
 
-        val nearByDangerManhole = getNearbyManholes(pushRequest.latitude, pushRequest.longitude, LAT_SHIFT_FOR_FCM, LNG_SHIFT_FOR_FCM)
+        val nearByDangerManhole = getNearbyManholes(
+                pushRequest.latitude,
+                pushRequest.longitude,
+                LAT_SHIFT_FOR_FCM,
+                LNG_SHIFT_FOR_FCM
+        )
 
         if (nearByDangerManhole.isNotEmpty()) {
             pushService.pushFcm(FcmDto.from(pushRequest.token))
         }
+    }
+
+    private fun shouldSendPushNotification(pushRequest: PushRequest): Boolean {
+        val cachedLocation = getCachedLocation(pushRequest.token)
+                ?: return true
+
+        return hasLocationChanged(pushRequest, cachedLocation)
+    }
+
+    private fun getCachedLocation(token: String): List<Double>? {
+        val cacheKey = "fcm_token:$token"
+        val cachedLocationString = redisTemplate.opsForValue().get(cacheKey)
+
+        return cachedLocationString?.split(",")?.map { it.toDouble() }
+    }
+
+    private fun hasLocationChanged(
+            pushRequest: PushRequest,
+            cachedLocation: List<Double>
+    ): Boolean {
+        val (cachedLat, cachedLng) = cachedLocation
+        val latDiff = abs(pushRequest.latitude - cachedLat)
+        val lngDiff = abs(pushRequest.longitude - cachedLng)
+
+        return latDiff > LAT_SHIFT_FOR_FCM || lngDiff > LNG_SHIFT_FOR_FCM
+    }
+
+    private fun updateLocationCache(pushRequest: PushRequest) {
+        val cacheKey = "fcm_token:${pushRequest.token}"
+        val locationValue = "${pushRequest.latitude},${pushRequest.longitude}"
+        redisTemplate.opsForValue().set(cacheKey, locationValue)
     }
 
     private fun getNearbyManholes(latitude: Double, longitude: Double, latShift: Double, lngShift: Double): List<ManholeDto> {
